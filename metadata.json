@@ -1,0 +1,6 @@
+{
+  "name": "RibLab - Gestão de Ordens de Serviço",
+  "description": "Sistema completo para técnicos de informática gerenciarem ordens de serviço de manutenção de computadores e notebooks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
