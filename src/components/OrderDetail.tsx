@@ -3,7 +3,8 @@ import { updateDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../lib/firebase';
 import { ServiceOrder, OrderStatus, Priority, PaymentMethod } from '../types';
 import { motion } from 'motion/react';
-import { X, Save, FileText, Settings, Wrench, User } from 'lucide-react';
+import { X, Save, FileText, Settings, Wrench, User, Printer } from 'lucide-react';
+import PrintOrder from './PrintOrder';
 
 interface OrderDetailProps {
   order: ServiceOrder;
@@ -17,6 +18,8 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(order.paymentMethod || PaymentMethod.Pix);
   const [partsCost, setPartsCost] = useState(order.partsCost);
   const [serviceCost, setServiceCost] = useState(order.serviceCost);
+  const [showPrint, setShowPrint] = useState(false);
+  const [showPrintPrompt, setShowPrintPrompt] = useState(false);
 
   const handleUpdate = async () => {
     if (!order.id) return;
@@ -31,7 +34,11 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
         totalCost: Number(partsCost) + Number(serviceCost),
         updatedAt: serverTimestamp()
       });
-      onClose();
+      if (status === OrderStatus.Completed && order.status !== OrderStatus.Completed) {
+        setShowPrintPrompt(true);
+      } else {
+        onClose();
+      }
     } catch (error) {
       handleFirestoreError(error, OperationType.UPDATE, `serviceOrders/${order.id}`);
     } finally {
@@ -43,7 +50,7 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 bg-slate-900/10 backdrop-blur-sm z-[70] flex items-center justify-center p-4"
+      className="fixed inset-0 bg-slate-900/10 backdrop-blur-sm z-[70] flex items-center justify-center p-4 print:hidden"
     >
       <motion.div 
         initial={{ y: 20, opacity: 0 }}
@@ -161,6 +168,14 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
           </div>
 
           <div className="flex gap-3">
+            <button 
+              type="button"
+              onClick={() => setShowPrint(true)}
+              className="px-5 py-3 border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors rounded-xl font-bold flex items-center gap-2 text-xs"
+            >
+              <Printer size={16} />
+              IMPRIMIR / PDF
+            </button>
             <button onClick={onClose} className="px-6 py-3 font-semibold text-slate-500 hover:bg-slate-200/50 transition-colors rounded-xl font-mono text-xs">// CANCELAR</button>
             <button 
               onClick={handleUpdate}
@@ -173,6 +188,57 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
           </div>
         </div>
       </motion.div>
+
+      {/* Print prompt overlay (when marked ready/completed) */}
+      {showPrintPrompt && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[90] flex items-center justify-center p-4 print:hidden">
+          <motion.div 
+            initial={{ scale: 0.95 }}
+            animate={{ scale: 1 }}
+            className="bg-white rounded-3xl p-8 max-w-sm w-full text-center space-y-6 shadow-2xl border border-slate-200"
+          >
+            <div className="w-16 h-16 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mx-auto text-3xl font-extrabold animate-bounce">
+              🎉
+            </div>
+            <div>
+              <h3 className="font-extrabold text-slate-900 tracking-tight text-xl">Ordem de Serviço Concluída!</h3>
+              <p className="text-xs text-slate-500 mt-2 font-medium">Esta Ordem de Serviço foi atualizada para "Concluído" com sucesso. Deseja imprimir o comprovante ou gerar o PDF para o cliente agora?</p>
+            </div>
+            <div className="flex flex-col gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowPrintPrompt(false);
+                  setShowPrint(true);
+                }}
+                className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-100"
+              >
+                <Printer size={14} /> IMPRIMIR / PDF
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowPrintPrompt(false);
+                  onClose();
+                }}
+                className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-xl text-xs transition-colors"
+              >
+                NÃO, SÓ FECHAR
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Print preview overlay */}
+      {showPrint && (
+        <PrintOrder order={order} onClose={() => {
+          setShowPrint(false);
+          if (status === OrderStatus.Completed && order.status !== OrderStatus.Completed) {
+            onClose();
+          }
+        }} />
+      )}
     </motion.div>
   );
 }

@@ -70,7 +70,7 @@ export default function Layout({ children, activeView, onViewChange }: LayoutPro
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-800 flex overflow-hidden font-sans">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-800 flex overflow-hidden font-sans print:hidden">
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-slate-200 flex flex-col hidden lg:flex h-screen sticky top-0 shadow-sm z-20">
         <div className="p-8">
