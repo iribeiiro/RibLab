@@ -268,6 +268,25 @@ export default function PrintOrder({ order, onClose }: PrintOrderProps) {
                     </div>
                   </div>
 
+                  {/* Device Photos in Preview */}
+                  {order.devicePhotos && order.devicePhotos.length > 0 && (
+                    <div className="space-y-2 pt-3">
+                      <h3 className="text-[10px] uppercase font-bold text-slate-400 tracking-wider border-b border-slate-100 pb-1">
+                        REGISTRO FOTOGRÁFICO DO EQUIPAMENTO ({order.devicePhotos.length})
+                      </h3>
+                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 bg-slate-50/80 p-3 rounded-xl border border-slate-100">
+                        {order.devicePhotos.map((photo, idx) => (
+                          <div key={idx} className="relative aspect-video bg-slate-200 rounded-lg overflow-hidden border border-slate-200 shadow-2xs">
+                            <img src={photo} alt={`Foto ${idx + 1}`} className="w-full h-full object-cover" />
+                            <span className="absolute bottom-1 left-1 bg-black/70 text-white text-[8px] font-mono px-1 rounded">
+                              #{idx + 1}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Financial calculations */}
                   <div className="space-y-3 pt-4">
                     <h3 className="text-[10px] uppercase font-bold text-slate-400 tracking-wider border-b border-slate-100 pb-1">VALORES E PAGAMENTO</h3>
@@ -354,6 +373,17 @@ export default function PrintOrder({ order, onClose }: PrintOrderProps) {
                       </>
                     )}
                   </div>
+
+                  {order.devicePhotos && order.devicePhotos.length > 0 && (
+                    <div className="border-t border-dashed border-slate-250 pt-2 space-y-1">
+                      <p className="font-bold text-[10px] text-slate-900 uppercase">FOTOS DO EQUIPAMENTO ({order.devicePhotos.length}):</p>
+                      <div className="grid grid-cols-2 gap-1.5 pt-1">
+                        {order.devicePhotos.map((photo, idx) => (
+                          <img key={idx} src={photo} alt={`Foto ${idx + 1}`} className="w-full h-16 object-cover rounded border border-slate-200" />
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   <div className="border-t border-dashed border-slate-250 pt-2 space-y-1 text-right">
                     <div className="flex justify-between">
@@ -477,6 +507,23 @@ export default function PrintOrder({ order, onClose }: PrintOrderProps) {
                   </div>
                 </div>
 
+                {/* Device Photos on A4 Printable */}
+                {order.devicePhotos && order.devicePhotos.length > 0 && (
+                  <div className="space-y-1 pt-1">
+                    <h3 className="text-[11px] font-bold uppercase border-b border-black pb-0.5">
+                      REGISTRO FOTOGRÁFICO DO EQUIPAMENTO / ESTADO FÍSICO ({order.devicePhotos.length})
+                    </h3>
+                    <div className="grid grid-cols-3 gap-2 pt-1">
+                      {order.devicePhotos.map((photo, idx) => (
+                        <div key={idx} className="border border-black p-1 rounded-xs text-center bg-white">
+                          <img src={photo} alt={`Foto ${idx + 1}`} className="w-full h-24 object-cover" />
+                          <span className="text-[8px] font-mono block mt-0.5">Foto #{idx + 1}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Finance and payments */}
                 <div className="space-y-1 pt-2">
                   <h3 className="text-[11px] font-bold uppercase border-b border-black pb-0.5">VALORES E CONDIÇÕES</h3>
@@ -562,6 +609,17 @@ export default function PrintOrder({ order, onClose }: PrintOrderProps) {
                     </>
                   )}
                 </div>
+
+                {order.devicePhotos && order.devicePhotos.length > 0 && (
+                  <div className="border-t border-dashed border-black pt-1">
+                    <p className="font-bold text-[9px] uppercase">FOTOS DO EQUIPAMENTO ({order.devicePhotos.length}):</p>
+                    <div className="grid grid-cols-2 gap-1 mt-1">
+                      {order.devicePhotos.map((photo, idx) => (
+                        <img key={idx} src={photo} alt={`Foto ${idx + 1}`} className="w-full h-20 object-cover border border-black" />
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div className="border-t border-dashed border-black pt-1 space-y-0.5">
                   <div className="flex justify-between">

@@ -3,8 +3,9 @@ import { updateDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../lib/firebase';
 import { ServiceOrder, OrderStatus, Priority, PaymentMethod } from '../types';
 import { motion } from 'motion/react';
-import { X, Save, FileText, Settings, Wrench, User, Printer } from 'lucide-react';
+import { X, Save, FileText, Settings, Wrench, User, Printer, Camera, Trash2, Eye, Loader2 } from 'lucide-react';
 import PrintOrder from './PrintOrder';
+import { compressImage } from '../lib/imageUtils';
 
 interface OrderDetailProps {
   order: ServiceOrder;
@@ -18,8 +19,38 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(order.paymentMethod || PaymentMethod.Pix);
   const [partsCost, setPartsCost] = useState(order.partsCost);
   const [serviceCost, setServiceCost] = useState(order.serviceCost);
+  const [devicePhotos, setDevicePhotos] = useState<string[]>(order.devicePhotos || []);
+  const [compressing, setCompressing] = useState(false);
+  const [activePhotoModal, setActivePhotoModal] = useState<string | null>(null);
   const [showPrint, setShowPrint] = useState(false);
   const [showPrintPrompt, setShowPrintPrompt] = useState(false);
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setCompressing(true);
+    try {
+      const newPhotos: string[] = [];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (file.type.startsWith('image/')) {
+          const compressed = await compressImage(file);
+          newPhotos.push(compressed);
+        }
+      }
+      setDevicePhotos(prev => [...prev, ...newPhotos]);
+    } catch (err) {
+      console.error("Error processing photo", err);
+    } finally {
+      setCompressing(false);
+      e.target.value = '';
+    }
+  };
+
+  const removePhoto = (index: number) => {
+    setDevicePhotos(prev => prev.filter((_, i) => i !== index));
+  };
 
   const handleUpdate = async () => {
     if (!order.id) return;
@@ -32,6 +63,7 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
         partsCost: Number(partsCost),
         serviceCost: Number(serviceCost),
         totalCost: Number(partsCost) + Number(serviceCost),
+        devicePhotos: devicePhotos,
         updatedAt: serverTimestamp()
       });
       if (status === OrderStatus.Completed && order.status !== OrderStatus.Completed) {
@@ -159,6 +191,70 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
               </div>
             </div>
           </div>
+
+          {/* Photos Management Section */}
+          <div className="space-y-3 bg-slate-50/80 p-5 rounded-2xl border border-slate-200/80">
+            <div className="flex justify-between items-center">
+              <div>
+                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                  <Camera size={16} className="text-blue-600" /> Registro Fotográfico do Equipamento ({devicePhotos.length})
+                </label>
+                <p className="text-[11px] text-slate-500">
+                  Fotos salvas para comprovação e inclusão automática no PDF/Comprovante impresso.
+                </p>
+              </div>
+              <label className={`
+                cursor-pointer px-4 py-2 bg-white border border-slate-200 hover:border-blue-400 text-blue-600 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm transition-all
+                ${compressing ? 'opacity-50 pointer-events-none' : ''}
+              `}>
+                {compressing ? <Loader2 size={16} className="animate-spin text-blue-600" /> : <Camera size={16} />}
+                <span>{compressing ? 'Processando...' : 'Adicionar Foto'}</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={handlePhotoUpload}
+                  disabled={compressing}
+                />
+              </label>
+            </div>
+
+            {devicePhotos.length > 0 ? (
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 pt-2">
+                {devicePhotos.map((photo, index) => (
+                  <div key={index} className="relative group aspect-square bg-slate-200 rounded-xl overflow-hidden border border-slate-300/80 shadow-xs">
+                    <img src={photo} alt={`Foto ${index + 1}`} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 p-1">
+                      <button
+                        type="button"
+                        onClick={() => setActivePhotoModal(photo)}
+                        className="p-1.5 bg-white/90 text-slate-700 rounded-lg hover:bg-white transition-colors"
+                        title="Visualizar"
+                      >
+                        <Eye size={14} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => removePhoto(index)}
+                        className="p-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                        title="Remover"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                    <span className="absolute bottom-1 left-1 bg-slate-900/70 text-white text-[9px] font-mono px-1.5 py-0.5 rounded">
+                      #{index + 1}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-4 border border-dashed border-slate-200 rounded-xl bg-white/60 text-xs text-slate-400">
+                Nenhuma foto registrada para esta OS. Clique em "Adicionar Foto" para anexar imagens da entrada/estado do produto.
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="p-8 flex justify-between items-center border-t border-slate-100 bg-slate-50/50">
@@ -188,6 +284,24 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
           </div>
         </div>
       </motion.div>
+
+      {/* Lightbox photo viewer */}
+      {activePhotoModal && (
+        <div 
+          className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[80] flex items-center justify-center p-4 cursor-pointer"
+          onClick={() => setActivePhotoModal(null)}
+        >
+          <div className="relative max-w-4xl max-h-[90vh] bg-black rounded-2xl overflow-hidden shadow-2xl border border-slate-700">
+            <button
+              onClick={() => setActivePhotoModal(null)}
+              className="absolute top-4 right-4 bg-slate-900/80 hover:bg-slate-900 text-white p-2 rounded-full z-10"
+            >
+              <X size={20} />
+            </button>
+            <img src={activePhotoModal} alt="Ampliada" className="max-w-full max-h-[85vh] object-contain mx-auto" />
+          </div>
+        </div>
+      )}
 
       {/* Print prompt overlay (when marked ready/completed) */}
       {showPrintPrompt && (
@@ -232,7 +346,16 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
 
       {/* Print preview overlay */}
       {showPrint && (
-        <PrintOrder order={order} onClose={() => {
+        <PrintOrder order={{
+          ...order,
+          status,
+          technicalReport: report,
+          paymentMethod,
+          partsCost: Number(partsCost),
+          serviceCost: Number(serviceCost),
+          totalCost: Number(partsCost) + Number(serviceCost),
+          devicePhotos
+        }} onClose={() => {
           setShowPrint(false);
           if (status === OrderStatus.Completed && order.status !== OrderStatus.Completed) {
             onClose();

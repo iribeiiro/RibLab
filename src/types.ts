@@ -61,6 +61,7 @@ export interface ServiceOrder {
   serialNumber: string;
   problemDescription: string;
   technicalReport?: string;
+  devicePhotos?: string[];
   status: OrderStatus;
   priority: Priority;
   partsCost: number;
