@@ -30,6 +30,7 @@ export default function Dashboard() {
       })) as ServiceOrder[];
       setOrders(ordersData);
     }, (error) => {
+      console.error("Error listening to serviceOrders:", error);
       handleFirestoreError(error, OperationType.LIST, 'serviceOrders');
     });
 
@@ -46,6 +47,7 @@ export default function Dashboard() {
       })) as Sale[];
       setSales(salesData);
     }, (error) => {
+      console.error("Error listening to sales:", error);
       handleFirestoreError(error, OperationType.LIST, 'sales');
     });
 
@@ -65,6 +67,7 @@ export default function Dashboard() {
         updatedAt: serverTimestamp()
       });
     } catch (error) {
+      console.error("Error completing order:", error);
       handleFirestoreError(error, OperationType.UPDATE, `serviceOrders/${orderId}`);
     } finally {
       setLoadingId(null);
@@ -73,15 +76,17 @@ export default function Dashboard() {
 
   const handleConfirmDelete = async () => {
     if (!orderToDelete?.id) return;
+    const targetId = orderToDelete.id;
     setIsDeleting(true);
     try {
-      await deleteDoc(doc(db, 'serviceOrders', orderToDelete.id));
-      if (selectedOrder?.id === orderToDelete.id) {
+      if (selectedOrder?.id === targetId) {
         setSelectedOrder(null);
       }
       setOrderToDelete(null);
+      await deleteDoc(doc(db, 'serviceOrders', targetId));
     } catch (error) {
-      handleFirestoreError(error, OperationType.DELETE, `serviceOrders/${orderToDelete.id}`);
+      console.error("Error deleting order:", error);
+      handleFirestoreError(error, OperationType.DELETE, `serviceOrders/${targetId}`);
     } finally {
       setIsDeleting(false);
     }
@@ -94,12 +99,12 @@ export default function Dashboard() {
       case OrderStatus.WaitingParts: return 'Aguardando Peças';
       case OrderStatus.Completed: return 'Concluído';
       case OrderStatus.Canceled: return 'Cancelado';
-      default: return status;
+      default: return status || 'Pendente';
     }
   };
 
   useEffect(() => {
-    // Process data for charts
+    // Process data for charts safely
     const monthlyData: { [key: string]: { month: string, servicos: number, vendas: number, lucro: number } } = {};
     
     // Last 6 months labels
@@ -114,22 +119,33 @@ export default function Dashboard() {
     }
 
     orders.forEach(order => {
-      if (!order.createdAt?.toDate) return;
-      const d = order.createdAt.toDate();
-      const key = `${d.getFullYear()}-${d.getMonth() + 1}`;
-      if (monthlyData[key] && order.status === OrderStatus.Completed) {
-        monthlyData[key].servicos += order.serviceCost;
-        monthlyData[key].lucro += order.serviceCost;
+      if (!order?.createdAt?.toDate) return;
+      try {
+        const d = order.createdAt.toDate();
+        const key = `${d.getFullYear()}-${d.getMonth() + 1}`;
+        if (monthlyData[key] && order.status === OrderStatus.Completed) {
+          const sCost = Number(order.serviceCost) || 0;
+          monthlyData[key].servicos += sCost;
+          monthlyData[key].lucro += sCost;
+        }
+      } catch (e) {
+        console.warn('Error reading order date for charts', e);
       }
     });
 
     sales.forEach(sale => {
-      if (!sale.soldAt?.toDate) return;
-      const d = sale.soldAt.toDate();
-      const key = `${d.getFullYear()}-${d.getMonth() + 1}`;
-      if (monthlyData[key]) {
-        monthlyData[key].vendas += sale.salePrice;
-        monthlyData[key].lucro += sale.profit;
+      if (!sale?.soldAt?.toDate) return;
+      try {
+        const d = sale.soldAt.toDate();
+        const key = `${d.getFullYear()}-${d.getMonth() + 1}`;
+        if (monthlyData[key]) {
+          const sPrice = Number(sale.salePrice) || 0;
+          const sProfit = Number(sale.profit) || 0;
+          monthlyData[key].vendas += sPrice;
+          monthlyData[key].lucro += sProfit;
+        }
+      } catch (e) {
+        console.warn('Error reading sale date for charts', e);
       }
     });
 
@@ -138,9 +154,9 @@ export default function Dashboard() {
 
   const totalServiceProfit = orders
     .filter(o => o.status === OrderStatus.Completed)
-    .reduce((acc, order) => acc + (order.serviceCost || 0), 0);
+    .reduce((acc, order) => acc + (Number(order.serviceCost) || 0), 0);
   
-  const totalSalesProfit = sales.reduce((acc, sale) => acc + (sale.profit || 0), 0);
+  const totalSalesProfit = sales.reduce((acc, sale) => acc + (Number(sale.profit) || 0), 0);
   const totalAccumulatedProfit = totalServiceProfit + totalSalesProfit;
 
   return (
@@ -264,7 +280,7 @@ export default function Dashboard() {
                     <span className="text-[10px] bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded uppercase">{order.paymentMethod || '-'}</span>
                   </td>
                   <td className="px-6 py-4 text-right font-semibold text-slate-900">
-                    R$ {order.totalCost.toFixed(2)}
+                    R$ {(Number(order.totalCost) || 0).toFixed(2)}
                   </td>
                   <td className="px-6 py-4 text-center">
                     <div className="flex items-center justify-center gap-1.5" onClick={(e) => e.stopPropagation()}>

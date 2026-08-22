@@ -5,6 +5,7 @@ import OrderForm from './components/OrderForm';
 import Inventory from './components/Inventory';
 import Customers from './components/Customers';
 import Quotes from './components/Quotes';
+import ErrorBoundary from './components/ErrorBoundary';
 import { Plus } from 'lucide-react';
 
 export default function App() {
@@ -83,14 +84,16 @@ export default function App() {
 
   return (
     <Layout activeView={currentView} onViewChange={setCurrentView}>
-      <div className="max-w-6xl mx-auto">
-        {renderView()}
-        
-        {/* New Order Modal */}
-        {showNewOrder && (
-          <OrderForm onClose={() => setShowNewOrder(false)} />
-        )}
-      </div>
+      <ErrorBoundary>
+        <div className="max-w-6xl mx-auto">
+          {renderView()}
+          
+          {/* New Order Modal */}
+          {showNewOrder && (
+            <OrderForm onClose={() => setShowNewOrder(false)} />
+          )}
+        </div>
+      </ErrorBoundary>
 
       {/* Floating Action Button (Mobile) */}
       <div className="lg:hidden fixed bottom-24 right-6 z-40">

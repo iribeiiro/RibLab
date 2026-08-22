@@ -81,14 +81,16 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
   };
 
   const handleDeleteOrder = async () => {
-    if (!order.id) return;
+    if (!order?.id) return;
+    const orderId = order.id;
     setDeleting(true);
     try {
-      await deleteDoc(doc(db, 'serviceOrders', order.id));
       setShowDeleteConfirm(false);
       onClose();
+      await deleteDoc(doc(db, 'serviceOrders', orderId));
     } catch (error) {
-      handleFirestoreError(error, OperationType.DELETE, `serviceOrders/${order.id}`);
+      console.error("Error deleting order in detail:", error);
+      handleFirestoreError(error, OperationType.DELETE, `serviceOrders/${orderId}`);
     } finally {
       setDeleting(false);
     }
