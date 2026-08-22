@@ -31,7 +31,14 @@ service cloud.firestore {
     match /serviceOrders/{orderId} {
       allow read: if isSignedIn();
       allow create, update: if isSignedIn() && incoming().createdBy == request.auth.uid;
-      allow delete: if isSignedIn() && existing().createdBy == request.auth.uid;
+      allow delete: if isSignedIn();
+    }
+
+    // --- Quotes (Orçamentos) ---
+    match /quotes/{quoteId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && incoming().createdBy == request.auth.uid;
+      allow delete: if isSignedIn();
     }
 
     // --- Customers ---

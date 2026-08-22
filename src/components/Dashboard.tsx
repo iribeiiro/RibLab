@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, onSnapshot, orderBy, limit, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
+import { collection, query, onSnapshot, orderBy, limit, updateDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../lib/firebase';
 import { ServiceOrder, OrderStatus, Sale } from '../types';
-import { motion } from 'motion/react';
-import { ClipboardList, Clock, CheckCircle, AlertCircle, BarChart3, TrendingUp, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ClipboardList, Clock, CheckCircle, AlertCircle, BarChart3, TrendingUp, Check, Trash2, AlertTriangle, Loader2, X } from 'lucide-react';
 import OrderDetail from './OrderDetail';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
 
@@ -13,6 +13,8 @@ export default function Dashboard() {
   const [selectedOrder, setSelectedOrder] = useState<ServiceOrder | null>(null);
   const [chartData, setChartData] = useState<any[]>([]);
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [orderToDelete, setOrderToDelete] = useState<ServiceOrder | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const qOrders = query(
@@ -66,6 +68,22 @@ export default function Dashboard() {
       handleFirestoreError(error, OperationType.UPDATE, `serviceOrders/${orderId}`);
     } finally {
       setLoadingId(null);
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!orderToDelete?.id) return;
+    setIsDeleting(true);
+    try {
+      await deleteDoc(doc(db, 'serviceOrders', orderToDelete.id));
+      if (selectedOrder?.id === orderToDelete.id) {
+        setSelectedOrder(null);
+      }
+      setOrderToDelete(null);
+    } catch (error) {
+      handleFirestoreError(error, OperationType.DELETE, `serviceOrders/${orderToDelete.id}`);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -249,16 +267,28 @@ export default function Dashboard() {
                     R$ {order.totalCost.toFixed(2)}
                   </td>
                   <td className="px-6 py-4 text-center">
-                    {order.status !== OrderStatus.Completed && (
+                    <div className="flex items-center justify-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                      {order.status !== OrderStatus.Completed && (
+                        <button 
+                          onClick={(e) => handleQuickComplete(e, order.id!)}
+                          disabled={loadingId === order.id}
+                          className="bg-green-500 hover:bg-green-600 text-white p-1.5 rounded-lg transition-all hover:scale-105 active:scale-95 disabled:opacity-50 shadow-sm shadow-green-200"
+                          title="Concluir Ordem"
+                        >
+                          <Check size={15} strokeWidth={3} />
+                        </button>
+                      )}
                       <button 
-                        onClick={(e) => handleQuickComplete(e, order.id!)}
-                        disabled={loadingId === order.id}
-                        className="bg-green-500 text-white p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110 active:scale-95 disabled:opacity-50"
-                        title="Concluir Ordem"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setOrderToDelete(order);
+                        }}
+                        className="text-slate-400 hover:text-red-600 hover:bg-red-50 p-1.5 rounded-lg transition-all hover:scale-105 active:scale-95"
+                        title="Excluir Ordem de Serviço"
                       >
-                        <Check size={16} strokeWidth={3} />
+                        <Trash2 size={16} />
                       </button>
-                    )}
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -277,6 +307,72 @@ export default function Dashboard() {
       {selectedOrder && (
         <OrderDetail order={selectedOrder} onClose={() => setSelectedOrder(null)} />
       )}
+
+      {/* Delete Confirmation Modal */}
+      <AnimatePresence>
+        {orderToDelete && (
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[95] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200 space-y-6"
+            >
+              <div className="flex items-center justify-between">
+                <div className="w-12 h-12 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center">
+                  <AlertTriangle size={24} />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => !isDeleting && setOrderToDelete(null)}
+                  className="text-slate-400 hover:text-slate-700 p-2 rounded-full hover:bg-slate-100 transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold text-slate-900 tracking-tight">Excluir Ordem de Serviço?</h3>
+                <p className="text-sm text-slate-500 mt-2 leading-relaxed">
+                  Tem certeza que deseja excluir permanentemente a OS <strong className="text-slate-800">#{orderToDelete.orderNumber}</strong> do cliente <strong className="text-slate-800">{orderToDelete.customerName}</strong> ({orderToDelete.deviceType} {orderToDelete.deviceBrand} {orderToDelete.deviceModel})?
+                </p>
+                <div className="mt-3 p-3 bg-red-50/50 border border-red-100 rounded-xl text-xs text-red-600 font-medium">
+                  Esta ação é irreversível e removerá todos os dados e histórico desta ordem.
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setOrderToDelete(null)}
+                  disabled={isDeleting}
+                  className="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirmDelete}
+                  disabled={isDeleting}
+                  className="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs transition-colors flex items-center justify-center gap-2 shadow-lg shadow-red-100 active:scale-95 disabled:opacity-50"
+                >
+                  {isDeleting ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      Excluindo...
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 size={16} />
+                      Sim, Excluir
+                    </>
+                  )}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

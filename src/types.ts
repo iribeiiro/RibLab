@@ -93,3 +93,51 @@ export interface Sale {
   profit: number;
   soldAt: any;
 }
+
+export enum QuoteStatus {
+  Pending = "Pendente",
+  Approved = "Aprovado",
+  Rejected = "Recusado",
+  Converted = "Convertido em OS"
+}
+
+export type QuoteItemType = "service" | "product" | "part" | "other";
+
+export interface QuoteItem {
+  id: string;
+  type: QuoteItemType;
+  description: string;
+  quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+}
+
+export interface Quote {
+  id?: string;
+  quoteNumber: string;
+  customerId?: string;
+  customerName: string;
+  customerPhone: string;
+  customerEmail?: string;
+  customerAddress?: string;
+  deviceType: DeviceType;
+  deviceBrand: string;
+  deviceModel: string;
+  serialNumber?: string;
+  reportedProblem: string; // Defeito relatado pelo cliente
+  technicalDiagnosis?: string; // Relato técnico após os testes
+  items: QuoteItem[]; // Serviços e produtos com preços
+  servicesCost: number;
+  partsCost: number;
+  discount?: number;
+  totalAmount: number;
+  validityDays?: number; // Validade da proposta (em dias, ex: 10 dias)
+  notes?: string;
+  devicePhotos?: string[];
+  status: QuoteStatus;
+  convertedOrderId?: string;
+  convertedOrderNumber?: string;
+  createdAt: any; // Firestore Timestamp
+  updatedAt: any; // Firestore Timestamp
+  createdBy: string;
+}

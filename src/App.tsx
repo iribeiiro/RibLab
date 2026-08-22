@@ -4,6 +4,7 @@ import Dashboard from './components/Dashboard';
 import OrderForm from './components/OrderForm';
 import Inventory from './components/Inventory';
 import Customers from './components/Customers';
+import Quotes from './components/Quotes';
 import { Plus } from 'lucide-react';
 
 export default function App() {
@@ -49,6 +50,12 @@ export default function App() {
               </button>
             </header>
             <Dashboard />
+          </>
+        );
+      case 'quotes':
+        return (
+          <>
+            <Quotes onNavigateToOrders={() => setCurrentView('orders')} />
           </>
         );
       case 'inventory':

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { updateDoc, doc, serverTimestamp } from 'firebase/firestore';
+import { updateDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../lib/firebase';
 import { ServiceOrder, OrderStatus, Priority, PaymentMethod } from '../types';
-import { motion } from 'motion/react';
-import { X, Save, FileText, Settings, Wrench, User, Printer, Camera, Trash2, Eye, Loader2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { X, Save, FileText, Settings, Wrench, User, Printer, Camera, Trash2, Eye, Loader2, AlertTriangle } from 'lucide-react';
 import PrintOrder from './PrintOrder';
 import { compressImage } from '../lib/imageUtils';
 
@@ -14,6 +14,8 @@ interface OrderDetailProps {
 
 export default function OrderDetail({ order, onClose }: OrderDetailProps) {
   const [loading, setLoading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [report, setReport] = useState(order.technicalReport || '');
   const [status, setStatus] = useState<OrderStatus>(order.status);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(order.paymentMethod || PaymentMethod.Pix);
@@ -75,6 +77,20 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
       handleFirestoreError(error, OperationType.UPDATE, `serviceOrders/${order.id}`);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteOrder = async () => {
+    if (!order.id) return;
+    setDeleting(true);
+    try {
+      await deleteDoc(doc(db, 'serviceOrders', order.id));
+      setShowDeleteConfirm(false);
+      onClose();
+    } catch (error) {
+      handleFirestoreError(error, OperationType.DELETE, `serviceOrders/${order.id}`);
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -263,7 +279,16 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
             <span className="text-3xl font-bold text-slate-900 tracking-tight">R$ {(Number(partsCost) + Number(serviceCost)).toFixed(2)}</span>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setShowDeleteConfirm(true)}
+              className="px-4 py-3 border border-red-200 text-red-600 hover:bg-red-50 transition-colors rounded-xl font-bold flex items-center gap-2 text-xs"
+              title="Excluir esta OS"
+            >
+              <Trash2 size={16} />
+              EXCLUIR OS
+            </button>
             <button 
               type="button"
               onClick={() => setShowPrint(true)}
@@ -276,7 +301,7 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
             <button 
               onClick={handleUpdate}
               disabled={loading}
-              className="tech-gradient text-white px-8 py-3 rounded-2xl font-bold transition-all flex items-center gap-2 disabled:opacity-50 active:scale-95"
+              className="tech-gradient text-white px-8 py-3 rounded-2xl font-bold transition-all flex items-center gap-2 disabled:opacity-50 active:scale-95 shadow-lg shadow-blue-100"
             >
               <Save size={18} />
               {loading ? 'SINCRONIZANDO...' : 'SALVAR ALTERAÇÕES'}
@@ -284,6 +309,72 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
           </div>
         </div>
       </motion.div>
+
+      {/* Delete Confirmation Modal */}
+      <AnimatePresence>
+        {showDeleteConfirm && (
+          <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200 space-y-6"
+            >
+              <div className="flex items-center justify-between">
+                <div className="w-12 h-12 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center">
+                  <AlertTriangle size={24} />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => !deleting && setShowDeleteConfirm(false)}
+                  className="text-slate-400 hover:text-slate-700 p-2 rounded-full hover:bg-slate-100 transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold text-slate-900 tracking-tight">Excluir Ordem #{order.orderNumber}?</h3>
+                <p className="text-sm text-slate-500 mt-2 leading-relaxed">
+                  Tem certeza que deseja excluir permanentemente a OS <strong className="text-slate-800">#{order.orderNumber}</strong> de <strong className="text-slate-800">{order.customerName}</strong> ({order.deviceType} {order.deviceBrand} {order.deviceModel})?
+                </p>
+                <div className="mt-3 p-3 bg-red-50/50 border border-red-100 rounded-xl text-xs text-red-600 font-medium">
+                  Esta ação é irreversível e removerá todos os dados e histórico desta ordem.
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowDeleteConfirm(false)}
+                  disabled={deleting}
+                  className="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDeleteOrder}
+                  disabled={deleting}
+                  className="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs transition-colors flex items-center justify-center gap-2 shadow-lg shadow-red-100 active:scale-95 disabled:opacity-50"
+                >
+                  {deleting ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      Excluindo...
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 size={16} />
+                      Sim, Excluir
+                    </>
+                  )}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Lightbox photo viewer */}
       {activePhotoModal && (

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth, signInWithGoogle, logout } from '../lib/firebase';
-import { LogIn, LogOut, Monitor, Settings, Plus, LayoutDashboard, Search, FileText, Package, Users, ClipboardList, FlaskConical } from 'lucide-react';
+import { LogIn, LogOut, Monitor, Settings, Plus, LayoutDashboard, Search, FileText, Package, Users, ClipboardList, FlaskConical, Calculator } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface LayoutProps {
@@ -85,6 +85,7 @@ export default function Layout({ children, activeView, onViewChange }: LayoutPro
           <nav className="space-y-1">
             <SidebarItem icon={<LayoutDashboard size={20} />} label="Dashboard" active={activeView === 'dashboard'} onClick={() => onViewChange('dashboard')} />
             <SidebarItem icon={<ClipboardList size={20} />} label="Ordens de Serviço" active={activeView === 'orders'} onClick={() => onViewChange('orders')} />
+            <SidebarItem icon={<Calculator size={20} />} label="Orçamentos" active={activeView === 'quotes'} onClick={() => onViewChange('quotes')} />
             <SidebarItem icon={<Package size={20} />} label="Estoque" active={activeView === 'inventory'} onClick={() => onViewChange('inventory')} />
             <SidebarItem icon={<Users size={20} />} label="Clientes" active={activeView === 'customers'} onClick={() => onViewChange('customers')} />
           </nav>
@@ -129,10 +130,11 @@ export default function Layout({ children, activeView, onViewChange }: LayoutPro
 
         {/* Mobile Navigation Bar */}
         <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-2 py-3 flex justify-around items-center z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
-          <MobileNavItem icon={<LayoutDashboard size={22} />} label="Início" active={activeView === 'dashboard'} onClick={() => onViewChange('dashboard')} />
-          <MobileNavItem icon={<ClipboardList size={22} />} label="OS" active={activeView === 'orders'} onClick={() => onViewChange('orders')} />
-          <MobileNavItem icon={<Package size={22} />} label="Estoque" active={activeView === 'inventory'} onClick={() => onViewChange('inventory')} />
-          <MobileNavItem icon={<Users size={22} />} label="Clientes" active={activeView === 'customers'} onClick={() => onViewChange('customers')} />
+          <MobileNavItem icon={<LayoutDashboard size={20} />} label="Início" active={activeView === 'dashboard'} onClick={() => onViewChange('dashboard')} />
+          <MobileNavItem icon={<ClipboardList size={20} />} label="OS" active={activeView === 'orders'} onClick={() => onViewChange('orders')} />
+          <MobileNavItem icon={<Calculator size={20} />} label="Orçamentos" active={activeView === 'quotes'} onClick={() => onViewChange('quotes')} />
+          <MobileNavItem icon={<Package size={20} />} label="Estoque" active={activeView === 'inventory'} onClick={() => onViewChange('inventory')} />
+          <MobileNavItem icon={<Users size={20} />} label="Clientes" active={activeView === 'customers'} onClick={() => onViewChange('customers')} />
         </nav>
       </div>
     </div>
