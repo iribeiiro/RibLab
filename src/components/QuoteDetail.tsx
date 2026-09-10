@@ -156,28 +156,28 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4 overflow-y-auto"
+        className="fixed inset-0 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4 overflow-y-auto"
       >
         <motion.div 
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.95, opacity: 0 }}
-          className="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden my-auto"
+          className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden my-auto"
         >
           {/* Header */}
-          <div className="p-6 border-b border-slate-100 flex flex-wrap justify-between items-center gap-4 bg-slate-50/70">
+          <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex flex-wrap justify-between items-center gap-4 bg-slate-50/70 dark:bg-slate-800/40">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-2xl tech-gradient text-white flex items-center justify-center shadow-md">
                 <FileText size={24} />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="font-extrabold text-slate-900 tracking-tight text-xl">
+                  <h3 className="font-extrabold text-slate-900 dark:text-white tracking-tight text-xl">
                     Orçamento #{currentQuote.quoteNumber}
                   </h3>
                   {getStatusBadge(status)}
                 </div>
-                <p className="text-xs text-slate-500 font-medium">
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
                   {currentQuote.customerName} • {currentQuote.deviceBrand} {currentQuote.deviceModel}
                 </p>
               </div>
@@ -188,7 +188,7 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
               <button
                 type="button"
                 onClick={() => setShowPrint(true)}
-                className="px-3.5 py-2 bg-white border border-slate-200 hover:border-blue-400 text-slate-700 hover:text-blue-600 rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5"
+                className="px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5"
               >
                 <Printer size={15} />
                 <span>Imprimir / PDF</span>
@@ -197,7 +197,7 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
               <button
                 type="button"
                 onClick={() => setShowEdit(true)}
-                className="px-3.5 py-2 bg-white border border-slate-200 hover:border-blue-400 text-slate-700 hover:text-blue-600 rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5"
+                className="px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5"
               >
                 <Edit2 size={15} />
                 <span>Editar</span>
@@ -206,7 +206,7 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
               <button
                 type="button"
                 onClick={handleDelete}
-                className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                className="p-2 text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 rounded-xl transition-colors"
                 title="Excluir Orçamento"
               >
                 <Trash2 size={18} />
@@ -215,7 +215,7 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
               <button 
                 type="button"
                 onClick={onClose} 
-                className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors ml-1"
+                className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors ml-1"
               >
                 <X size={20} />
               </button>
@@ -227,16 +227,16 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
             
             {/* Conversion Banner (if already converted or converted successfully) */}
             {convertedSuccess && (
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+              <div className="bg-blue-50 dark:bg-blue-950/40 border-2 border-blue-200 dark:border-blue-800 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold">
                     <Sparkles size={20} />
                   </div>
                   <div>
-                    <h4 className="font-extrabold text-blue-950 text-sm">
+                    <h4 className="font-extrabold text-blue-950 dark:text-blue-200 text-sm">
                       Ordem de Serviço #{convertedSuccess.orderNumber} Ativa!
                     </h4>
-                    <p className="text-xs text-blue-700">
+                    <p className="text-xs text-blue-700 dark:text-blue-300">
                       Este orçamento foi aprovado e transformado em uma Ordem de Serviço no sistema.
                     </p>
                   </div>
@@ -249,13 +249,13 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
 
             {/* If NOT converted yet: Conversion Highlight Box */}
             {!convertedSuccess && (
-              <div className="bg-gradient-to-r from-emerald-50 to-blue-50 border border-emerald-200/80 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
+              <div className="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-950/30 dark:to-blue-950/30 border border-emerald-200/80 dark:border-emerald-800/60 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
                 <div className="space-y-1">
-                  <h4 className="font-extrabold text-slate-900 text-sm flex items-center gap-2">
-                    <Sparkles size={18} className="text-emerald-600" />
+                  <h4 className="font-extrabold text-slate-900 dark:text-white text-sm flex items-center gap-2">
+                    <Sparkles size={18} className="text-emerald-600 dark:text-emerald-400" />
                     Cliente decidiu fazer o serviço?
                   </h4>
-                  <p className="text-xs text-slate-600 max-w-xl">
+                  <p className="text-xs text-slate-600 dark:text-slate-300 max-w-xl">
                     Clique no botão ao lado para <strong>gerar uma Ordem de Serviço automaticamente</strong> com todos os dados do cliente, aparelho, laudo dos testes e valores discriminados.
                   </p>
                 </div>
@@ -263,7 +263,7 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
                 <button
                   type="button"
                   onClick={() => setShowConvertModal(true)}
-                  className="shrink-0 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3 rounded-xl font-extrabold text-xs flex items-center gap-2 shadow-lg shadow-emerald-200 transition-all active:scale-95 cursor-pointer"
+                  className="shrink-0 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3 rounded-xl font-extrabold text-xs flex items-center gap-2 shadow-lg shadow-emerald-200 dark:shadow-none transition-all active:scale-95 cursor-pointer"
                 >
                   <ArrowRightCircle size={18} />
                   <span>Gerar Ordem de Serviço</span>
@@ -272,8 +272,8 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
             )}
 
             {/* Quick Status Pill selector */}
-            <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+            <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+              <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                 Atualizar Status do Orçamento:
               </span>
               <div className="flex flex-wrap gap-2">
@@ -286,7 +286,7 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
                     className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                       status === st
                         ? 'bg-blue-600 text-white shadow-md'
-                        : 'bg-white text-slate-600 hover:bg-slate-200 border border-slate-200'
+                        : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
                     }`}
                   >
                     {st}
@@ -298,47 +298,47 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
             {/* Customer & Machine Info Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Customer Box */}
-              <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/80 space-y-3">
+              <div className="bg-slate-50/80 dark:bg-slate-800/40 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
-                    <FileText size={16} className="text-blue-600" /> Cliente
+                  <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                    <FileText size={16} className="text-blue-600 dark:text-blue-400" /> Cliente
                   </h4>
                   {cleanPhone && (
                     <a
                       href={whatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs font-bold text-emerald-600 hover:text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-xl flex items-center gap-1.5 transition-colors shadow-2xs"
+                      className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900/60 px-3 py-1 rounded-xl flex items-center gap-1.5 transition-colors shadow-2xs"
                     >
                       <MessageSquare size={14} /> Enviar no WhatsApp
                     </a>
                   )}
                 </div>
-                <div className="space-y-1 text-xs text-slate-700">
-                  <p className="text-sm font-extrabold text-slate-900">{currentQuote.customerName}</p>
+                <div className="space-y-1 text-xs text-slate-700 dark:text-slate-300">
+                  <p className="text-sm font-extrabold text-slate-900 dark:text-white">{currentQuote.customerName}</p>
                   <p className="flex items-center gap-1.5"><Phone size={13} className="text-slate-400" /> {currentQuote.customerPhone}</p>
-                  {currentQuote.customerEmail && <p className="text-slate-500">{currentQuote.customerEmail}</p>}
-                  {currentQuote.customerAddress && <p className="text-slate-500">{currentQuote.customerAddress}</p>}
+                  {currentQuote.customerEmail && <p className="text-slate-500 dark:text-slate-400">{currentQuote.customerEmail}</p>}
+                  {currentQuote.customerAddress && <p className="text-slate-500 dark:text-slate-400">{currentQuote.customerAddress}</p>}
                 </div>
               </div>
 
               {/* Machine Box */}
-              <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/80 space-y-3">
-                <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
-                  <Wrench size={16} className="text-blue-600" /> Equipamento Avaliado
+              <div className="bg-slate-50/80 dark:bg-slate-800/40 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-3">
+                <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                  <Wrench size={16} className="text-blue-600 dark:text-blue-400" /> Equipamento Avaliado
                 </h4>
-                <div className="grid grid-cols-2 gap-2 text-xs text-slate-700">
+                <div className="grid grid-cols-2 gap-2 text-xs text-slate-700 dark:text-slate-300">
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">Tipo:</span>
-                    <span className="font-bold text-slate-900">{currentQuote.deviceType}</span>
+                    <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-400 block">Tipo:</span>
+                    <span className="font-bold text-slate-900 dark:text-white">{currentQuote.deviceType}</span>
                   </div>
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">Marca / Modelo:</span>
-                    <span className="font-bold text-slate-900">{currentQuote.deviceBrand} {currentQuote.deviceModel}</span>
+                    <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-400 block">Marca / Modelo:</span>
+                    <span className="font-bold text-slate-900 dark:text-white">{currentQuote.deviceBrand} {currentQuote.deviceModel}</span>
                   </div>
                   <div className="col-span-2">
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">Nº de Série / Tag:</span>
-                    <span className="font-mono text-slate-600">{currentQuote.serialNumber || 'Não informado'}</span>
+                    <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-400 block">Nº de Série / Tag:</span>
+                    <span className="font-mono text-slate-600 dark:text-slate-400">{currentQuote.serialNumber || 'Não informado'}</span>
                   </div>
                 </div>
               </div>
@@ -346,33 +346,33 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
 
             {/* Problem Reported & Technical Diagnosis */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-amber-50/70 p-5 rounded-2xl border border-amber-200/80 space-y-2">
-                <h4 className="text-xs font-bold text-amber-900 uppercase tracking-wider">
+              <div className="bg-amber-50/70 dark:bg-amber-950/20 p-5 rounded-2xl border border-amber-200/80 dark:border-amber-900/40 space-y-2">
+                <h4 className="text-xs font-bold text-amber-900 dark:text-amber-300 uppercase tracking-wider">
                   Defeito Relatado pelo Cliente
                 </h4>
-                <p className="text-xs text-slate-700 leading-relaxed bg-white/80 p-3 rounded-xl border border-amber-100 font-medium">
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed bg-white/80 dark:bg-slate-800 p-3 rounded-xl border border-amber-100 dark:border-amber-900/30 font-medium">
                   {currentQuote.reportedProblem || 'Não informado.'}
                 </p>
               </div>
 
-              <div className="bg-blue-50/70 p-5 rounded-2xl border border-blue-200/80 space-y-2">
-                <h4 className="text-xs font-bold text-blue-900 uppercase tracking-wider">
+              <div className="bg-blue-50/70 dark:bg-blue-950/20 p-5 rounded-2xl border border-blue-200/80 dark:border-blue-900/40 space-y-2">
+                <h4 className="text-xs font-bold text-blue-900 dark:text-blue-300 uppercase tracking-wider">
                   Relato Técnico / Diagnóstico dos Testes
                 </h4>
-                <p className="text-xs text-slate-700 leading-relaxed bg-white/80 p-3 rounded-xl border border-blue-100 font-medium">
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed bg-white/80 dark:bg-slate-800 p-3 rounded-xl border border-blue-100 dark:border-blue-900/30 font-medium">
                   {currentQuote.technicalDiagnosis || 'Em análise técnica preliminar.'}
                 </p>
               </div>
             </div>
 
             {/* Itemized Table of Services & Products */}
-            <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/80 space-y-3">
-              <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                <Package size={16} className="text-blue-600" /> Discriminação de Serviços e Produtos
+            <div className="bg-slate-50/80 dark:bg-slate-800/40 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-3">
+              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                <Package size={16} className="text-blue-600 dark:text-blue-400" /> Discriminação de Serviços e Produtos
               </h4>
               <div className="overflow-x-auto">
-                <table className="w-full text-xs text-left bg-white rounded-xl overflow-hidden border border-slate-200">
-                  <thead className="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                <table className="w-full text-xs text-left bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+                  <thead className="bg-slate-100 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
                     <tr>
                       <th className="p-3 w-20">Tipo</th>
                       <th className="p-3">Descrição</th>
@@ -381,30 +381,30 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
                       <th className="p-3 text-right w-32">Total</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
                     {currentQuote.items && currentQuote.items.length > 0 ? (
                       currentQuote.items.map((item, idx) => (
-                        <tr key={idx} className="hover:bg-slate-50/70">
+                        <tr key={idx} className="hover:bg-slate-50/70 dark:hover:bg-slate-750">
                           <td className="p-3">
                             <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
                               item.type === 'service'
-                                ? 'bg-blue-100 text-blue-800'
-                                : 'bg-emerald-100 text-emerald-800'
+                                ? 'bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300'
+                                : 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300'
                             }`}>
                               {item.type === 'service' ? 'Serviço' : 'Produto'}
                             </span>
                           </td>
-                          <td className="p-3 font-semibold text-slate-800">{item.description}</td>
-                          <td className="p-3 text-center text-slate-600 font-bold">{item.quantity}</td>
-                          <td className="p-3 text-right text-slate-600 font-mono">R$ {Number(item.unitPrice || 0).toFixed(2)}</td>
-                          <td className="p-3 text-right font-extrabold text-slate-900 font-mono">
+                          <td className="p-3 font-semibold text-slate-800 dark:text-slate-200">{item.description}</td>
+                          <td className="p-3 text-center text-slate-600 dark:text-slate-400 font-bold">{item.quantity}</td>
+                          <td className="p-3 text-right text-slate-600 dark:text-slate-400 font-mono">R$ {Number(item.unitPrice || 0).toFixed(2)}</td>
+                          <td className="p-3 text-right font-extrabold text-slate-900 dark:text-white font-mono">
                             R$ {Number(item.totalPrice || (item.quantity * item.unitPrice) || 0).toFixed(2)}
                           </td>
                         </tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={5} className="p-4 text-center text-slate-400 italic">Nenhum item informado</td>
+                        <td colSpan={5} className="p-4 text-center text-slate-400 dark:text-slate-500 italic">Nenhum item informado</td>
                       </tr>
                     )}
                   </tbody>
@@ -412,38 +412,38 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
               </div>
 
               {/* Financial Totals Breakdown */}
-              <div className="bg-white p-4 rounded-xl border border-slate-200 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+              <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
                 <div>
-                  <span className="text-[10px] font-bold uppercase text-slate-400 block">Mão de Obra</span>
-                  <span className="text-sm font-bold text-blue-700">R$ {(currentQuote.servicesCost || 0).toFixed(2)}</span>
+                  <span className="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400 block">Mão de Obra</span>
+                  <span className="text-sm font-bold text-blue-700 dark:text-blue-400">R$ {(currentQuote.servicesCost || 0).toFixed(2)}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold uppercase text-slate-400 block">Peças e Produtos</span>
-                  <span className="text-sm font-bold text-emerald-700">R$ {(currentQuote.partsCost || 0).toFixed(2)}</span>
+                  <span className="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400 block">Peças e Produtos</span>
+                  <span className="text-sm font-bold text-emerald-700 dark:text-emerald-400">R$ {(currentQuote.partsCost || 0).toFixed(2)}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold uppercase text-slate-400 block">Desconto</span>
-                  <span className="text-sm font-bold text-rose-600">R$ {(currentQuote.discount || 0).toFixed(2)}</span>
+                  <span className="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400 block">Desconto</span>
+                  <span className="text-sm font-bold text-rose-600 dark:text-rose-400">R$ {(currentQuote.discount || 0).toFixed(2)}</span>
                 </div>
-                <div className="text-right sm:border-l sm:border-slate-100 sm:pl-4">
-                  <span className="text-[10px] font-bold uppercase text-slate-500 block">VALOR TOTAL</span>
-                  <span className="text-lg font-black text-slate-900">R$ {(currentQuote.totalAmount || 0).toFixed(2)}</span>
+                <div className="text-right sm:border-l sm:border-slate-100 dark:sm:border-slate-700 sm:pl-4">
+                  <span className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block">VALOR TOTAL</span>
+                  <span className="text-lg font-black text-slate-900 dark:text-white">R$ {(currentQuote.totalAmount || 0).toFixed(2)}</span>
                 </div>
               </div>
             </div>
 
             {/* Photos of Equipment if attached */}
             {currentQuote.devicePhotos && currentQuote.devicePhotos.length > 0 && (
-              <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/80 space-y-3">
-                <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                  <FileText size={16} className="text-blue-600" /> Registro Fotográfico ({currentQuote.devicePhotos.length})
+              <div className="bg-slate-50/80 dark:bg-slate-800/40 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-3">
+                <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                  <FileText size={16} className="text-blue-600 dark:text-blue-400" /> Registro Fotográfico ({currentQuote.devicePhotos.length})
                 </h4>
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
                   {currentQuote.devicePhotos.map((photo, idx) => (
                     <div 
                       key={idx} 
                       onClick={() => setActivePhotoModal(photo)}
-                      className="relative group aspect-square rounded-xl overflow-hidden border border-slate-200 bg-slate-200 cursor-pointer shadow-2xs"
+                      className="relative group aspect-square rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-200 dark:bg-slate-700 cursor-pointer shadow-2xs"
                     >
                       <img src={photo} alt={`Foto ${idx + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                       <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
@@ -456,24 +456,24 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
             )}
 
             {/* Notes & Validity */}
-            <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-slate-600">
+            <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-slate-600 dark:text-slate-300">
               <div className="flex items-center gap-2">
-                <Calendar size={16} className="text-blue-600" />
+                <Calendar size={16} className="text-blue-600 dark:text-blue-400" />
                 <span>Validade da Proposta: <strong>{currentQuote.validityDays || 10} dias</strong></span>
               </div>
               {currentQuote.notes && (
-                <span className="text-slate-500 italic">Obs: {currentQuote.notes}</span>
+                <span className="text-slate-500 dark:text-slate-400 italic">Obs: {currentQuote.notes}</span>
               )}
             </div>
 
           </div>
 
           {/* Footer */}
-          <div className="p-6 border-t border-slate-100 bg-slate-50/70 flex justify-between items-center">
+          <div className="p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 flex justify-between items-center">
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2.5 rounded-xl font-bold text-xs text-slate-600 hover:bg-slate-200 transition-colors"
+              className="px-5 py-2.5 rounded-xl font-bold text-xs text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
             >
               Fechar
             </button>
@@ -504,26 +504,26 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
 
       {/* Convert to OS Confirmation Dialog */}
       {showConvertModal && (
-        <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-[80] flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-slate-950/70 dark:bg-black/80 backdrop-blur-sm z-[80] flex items-center justify-center p-4">
           <motion.div 
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200 text-left space-y-4"
+            className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-800 text-left space-y-4"
           >
-            <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center shadow-xs">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shadow-xs">
               <Sparkles size={24} />
             </div>
 
             <div className="space-y-1">
-              <h3 className="font-extrabold text-slate-900 text-lg">
+              <h3 className="font-extrabold text-slate-900 dark:text-white text-lg">
                 Gerar Ordem de Serviço?
               </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                 Esta ação criará uma nova <strong>Ordem de Serviço (OS)</strong> automaticamente vinculada ao cliente <strong>{currentQuote.customerName}</strong> com todos os itens, diagnóstico dos testes e valores aprovados (R$ {Number(currentQuote.totalAmount).toFixed(2)}).
               </p>
             </div>
 
-            <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs space-y-1">
+            <div className="bg-slate-50 dark:bg-slate-800/60 p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs space-y-1 text-slate-700 dark:text-slate-300">
               <p><strong>Aparelho:</strong> {currentQuote.deviceBrand} {currentQuote.deviceModel}</p>
               <p><strong>Valor Total:</strong> R$ {Number(currentQuote.totalAmount).toFixed(2)}</p>
               <p><strong>Itens incluídos:</strong> {currentQuote.items?.length || 0} itens discriminados</p>
@@ -534,7 +534,7 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
                 type="button"
                 onClick={() => setShowConvertModal(false)}
                 disabled={converting}
-                className="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl"
+                className="px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
               >
                 Cancelar
               </button>
@@ -542,7 +542,7 @@ export default function QuoteDetail({ quote, onClose, onOrderCreated }: QuoteDet
                 type="button"
                 onClick={handleConvertToServiceOrder}
                 disabled={converting}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-xs font-extrabold flex items-center gap-2 shadow-lg shadow-emerald-200 active:scale-95 disabled:opacity-50 cursor-pointer"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-xs font-extrabold flex items-center gap-2 shadow-lg shadow-emerald-200 dark:shadow-none active:scale-95 disabled:opacity-50 cursor-pointer"
               >
                 {converting ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
                 <span>{converting ? 'Gerando OS...' : 'Confirmar e Gerar OS'}</span>

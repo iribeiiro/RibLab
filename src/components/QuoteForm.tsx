@@ -289,25 +289,25 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4 overflow-y-auto"
+      className="fixed inset-0 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4 overflow-y-auto"
     >
       <motion.div 
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
-        className="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden my-auto"
+        className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden my-auto"
       >
         {/* Modal Header */}
-        <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/70">
+        <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/70 dark:bg-slate-800/40">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md">
               <FileText size={22} />
             </div>
             <div>
-              <h3 className="font-extrabold text-slate-900 tracking-tight text-xl">
+              <h3 className="font-extrabold text-slate-900 dark:text-white tracking-tight text-xl">
                 {initialQuote ? `Editar Orçamento #${initialQuote.quoteNumber}` : 'Novo Orçamento de Serviços & Peças'}
               </h3>
-              <p className="text-xs text-slate-500 font-medium">
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
                 Elabore a proposta comercial detalhada para o cliente com cálculo automático
               </p>
             </div>
@@ -315,7 +315,7 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
           <button 
             type="button"
             onClick={onClose} 
-            className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
+            className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
           >
             <X size={20} />
           </button>
@@ -325,13 +325,13 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6">
           
           {/* Section 1: Customer Information */}
-          <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/80 space-y-4">
+          <div className="bg-slate-50/80 dark:bg-slate-800/40 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-4">
             <div className="flex items-center justify-between">
-              <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
-                <User size={16} className="text-blue-600" /> Dados do Cliente
+              <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                <User size={16} className="text-blue-600 dark:text-blue-400" /> Dados do Cliente
               </h4>
               {selectedCustomerId && (
-                <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900/60 px-2 py-0.5 rounded-full flex items-center gap-1">
                   <CheckCircle2 size={12} /> Cliente Vinculado
                 </span>
               )}
@@ -339,13 +339,13 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="relative">
-                <label className="text-xs font-bold text-slate-600 mb-1.5 block">Nome do Cliente *</label>
+                <label className="text-xs font-bold text-slate-600 dark:text-slate-400 mb-1.5 block">Nome do Cliente *</label>
                 <div className="relative">
                   <input
                     type="text"
                     required
                     placeholder="Digite o nome ou busque..."
-                    className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
+                    className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
                     value={customerName}
                     onChange={(e) => {
                       setCustomerName(e.target.value);
@@ -354,24 +354,24 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
                     }}
                     onFocus={() => setShowCustomerResults(true)}
                   />
-                  <Search size={16} className="absolute right-3.5 top-3 text-slate-400 pointer-events-none" />
+                  <Search size={16} className="absolute right-3.5 top-3 text-slate-400 dark:text-slate-500 pointer-events-none" />
                 </div>
 
                 {/* Autocomplete dropdown */}
                 {showCustomerResults && customerName && filteredCustomers.length > 0 && !selectedCustomerId && (
-                  <div className="absolute left-0 right-0 top-full mt-1 bg-white rounded-xl shadow-xl border border-slate-200 z-30 max-h-48 overflow-y-auto divide-y divide-slate-100">
+                  <div className="absolute left-0 right-0 top-full mt-1 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-30 max-h-48 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-700">
                     {filteredCustomers.map(cust => (
                       <button
                         key={cust.id}
                         type="button"
                         onClick={() => handleSelectCustomer(cust)}
-                        className="w-full text-left px-4 py-2.5 hover:bg-blue-50/80 transition-colors flex items-center justify-between text-xs"
+                        className="w-full text-left px-4 py-2.5 hover:bg-blue-50/80 dark:hover:bg-slate-700 transition-colors flex items-center justify-between text-xs"
                       >
                         <div>
-                          <p className="font-bold text-slate-800">{cust.name}</p>
-                          <p className="text-slate-400 text-[11px]">{cust.phone || cust.whatsapp}</p>
+                          <p className="font-bold text-slate-800 dark:text-slate-100">{cust.name}</p>
+                          <p className="text-slate-400 dark:text-slate-400 text-[11px]">{cust.phone || cust.whatsapp}</p>
                         </div>
-                        <span className="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded">Selecionar</span>
+                        <span className="text-[10px] text-blue-600 dark:text-blue-400 font-bold bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 rounded">Selecionar</span>
                       </button>
                     ))}
                   </div>
@@ -379,34 +379,34 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-600 mb-1.5 block">Telefone / WhatsApp *</label>
+                <label className="text-xs font-bold text-slate-600 dark:text-slate-400 mb-1.5 block">Telefone / WhatsApp *</label>
                 <input
                   type="text"
                   required
                   placeholder="(00) 00000-0000"
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
+                  className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
                   value={customerPhone}
                   onChange={(e) => setCustomerPhone(e.target.value)}
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-600 mb-1.5 block">E-mail (Opcional)</label>
+                <label className="text-xs font-bold text-slate-600 dark:text-slate-400 mb-1.5 block">E-mail (Opcional)</label>
                 <input
                   type="email"
                   placeholder="cliente@email.com"
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
+                  className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
                   value={customerEmail}
                   onChange={(e) => setCustomerEmail(e.target.value)}
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-600 mb-1.5 block">Endereço (Opcional)</label>
+                <label className="text-xs font-bold text-slate-600 dark:text-slate-400 mb-1.5 block">Endereço (Opcional)</label>
                 <input
                   type="text"
                   placeholder="Rua, Número, Bairro, Cidade"
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
+                  className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
                   value={customerAddress}
                   onChange={(e) => setCustomerAddress(e.target.value)}
                 />
@@ -415,18 +415,18 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
           </div>
 
           {/* Section 2: Machine / Equipment Details */}
-          <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/80 space-y-4">
-            <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
-              <Wrench size={16} className="text-blue-600" /> Equipamento Avaliado
+          <div className="bg-slate-50/80 dark:bg-slate-800/40 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-4">
+            <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-2">
+              <Wrench size={16} className="text-blue-600 dark:text-blue-400" /> Equipamento Avaliado
             </h4>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div>
-                <label className="text-xs font-bold text-slate-600 mb-1.5 block">Tipo de Máquina</label>
+                <label className="text-xs font-bold text-slate-600 dark:text-slate-400 mb-1.5 block">Tipo de Máquina</label>
                 <select
                   value={deviceType}
                   onChange={(e) => setDeviceType(e.target.value as DeviceType)}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-medium text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value={DeviceType.Notebook}>Notebook</option>
                   <option value={DeviceType.Desktop}>Desktop / PC</option>
@@ -436,33 +436,33 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-600 mb-1.5 block">Marca</label>
+                <label className="text-xs font-bold text-slate-600 dark:text-slate-400 mb-1.5 block">Marca</label>
                 <input
                   type="text"
                   placeholder="Ex: Dell, Lenovo, Acer, Asus..."
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-medium text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={deviceBrand}
                   onChange={(e) => setDeviceBrand(e.target.value)}
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-600 mb-1.5 block">Modelo</label>
+                <label className="text-xs font-bold text-slate-600 dark:text-slate-400 mb-1.5 block">Modelo</label>
                 <input
                   type="text"
                   placeholder="Ex: Inspiron 15, Nitro 5, IdeaPad..."
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-medium text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={deviceModel}
                   onChange={(e) => setDeviceModel(e.target.value)}
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-600 mb-1.5 block">Nº de Série / Service Tag</label>
+                <label className="text-xs font-bold text-slate-600 dark:text-slate-400 mb-1.5 block">Nº de Série / Service Tag</label>
                 <input
                   type="text"
                   placeholder="Ex: SN-9823472"
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-medium text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={serialNumber}
                   onChange={(e) => setSerialNumber(e.target.value)}
                 />
@@ -472,30 +472,30 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
 
           {/* Section 3: Reported Defect & Technical Diagnosis */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-amber-50/60 p-4 rounded-2xl border border-amber-200/80 space-y-2">
-              <label className="text-xs font-bold text-amber-900 uppercase tracking-wider flex items-center justify-between">
+            <div className="bg-amber-50/60 dark:bg-amber-950/20 p-4 rounded-2xl border border-amber-200/80 dark:border-amber-900/40 space-y-2">
+              <label className="text-xs font-bold text-amber-900 dark:text-amber-300 uppercase tracking-wider flex items-center justify-between">
                 <span>Defeito Relatado pelo Cliente *</span>
-                <span className="text-[10px] text-amber-700 font-normal">O que o cliente falou</span>
+                <span className="text-[10px] text-amber-700 dark:text-amber-400 font-normal">O que o cliente falou</span>
               </label>
               <textarea
                 required
                 rows={3}
                 placeholder="Ex: O cliente informou que o notebook não liga, e quando liga desliga após 5 minutos jogando ou esquenta muito..."
-                className="w-full bg-white border border-amber-200 rounded-xl p-3 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none font-medium"
+                className="w-full bg-white dark:bg-slate-800 border border-amber-200 dark:border-amber-900/50 rounded-xl p-3 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none font-medium"
                 value={reportedProblem}
                 onChange={(e) => setReportedProblem(e.target.value)}
               />
             </div>
 
-            <div className="bg-blue-50/60 p-4 rounded-2xl border border-blue-200/80 space-y-2">
-              <label className="text-xs font-bold text-blue-900 uppercase tracking-wider flex items-center justify-between">
+            <div className="bg-blue-50/60 dark:bg-blue-950/20 p-4 rounded-2xl border border-blue-200/80 dark:border-blue-900/40 space-y-2">
+              <label className="text-xs font-bold text-blue-900 dark:text-blue-300 uppercase tracking-wider flex items-center justify-between">
                 <span>Relato Técnico / Diagnóstico após Testes</span>
-                <span className="text-[10px] text-blue-700 font-normal">Após avaliação técnica</span>
+                <span className="text-[10px] text-blue-700 dark:text-blue-400 font-normal">Após avaliação técnica</span>
               </label>
               <textarea
                 rows={3}
                 placeholder="Ex: Testado na bancada: pasta térmica ressecada e cooler obstruído por poeira (CPU atingindo 97ºC). Placa mãe íntegra. Recomendado limpeza interna, troca de pasta térmica e SSD NVMe..."
-                className="w-full bg-white border border-blue-200 rounded-xl p-3 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none font-medium"
+                className="w-full bg-white dark:bg-slate-800 border border-blue-200 dark:border-blue-900/50 rounded-xl p-3 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none font-medium"
                 value={technicalDiagnosis}
                 onChange={(e) => setTechnicalDiagnosis(e.target.value)}
               />
@@ -503,13 +503,13 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
           </div>
 
           {/* Section 4: Dynamic Itemized List of Services and Products/Parts */}
-          <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/80 space-y-4">
+          <div className="bg-slate-50/80 dark:bg-slate-800/40 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
-                <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                  <Package size={16} className="text-blue-600" /> Serviços & Peças/Produtos do Orçamento
+                <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                  <Package size={16} className="text-blue-600 dark:text-blue-400" /> Serviços & Peças/Produtos do Orçamento
                 </h4>
-                <p className="text-[11px] text-slate-500">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">
                   Adicione os serviços (mão de obra) e as peças/produtos necessários com seus respectivos preços.
                 </p>
               </div>
@@ -519,14 +519,14 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
                 <button
                   type="button"
                   onClick={() => addItem('service', '', 100)}
-                  className="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer border border-blue-200"
+                  className="px-3 py-1.5 bg-blue-50 dark:bg-blue-950/60 hover:bg-blue-100 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer border border-blue-200 dark:border-blue-900/50"
                 >
                   <Plus size={14} /> + Serviço
                 </button>
                 <button
                   type="button"
                   onClick={() => addItem('product', '', 200)}
-                  className="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer border border-emerald-200"
+                  className="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer border border-emerald-200 dark:border-emerald-900/50"
                 >
                   <Plus size={14} /> + Peça/Produto
                 </button>
@@ -534,8 +534,8 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
             </div>
 
             {/* Quick Suggestions Chips */}
-            <div className="bg-white p-3 rounded-xl border border-slate-200 space-y-2">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+            <div className="bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1">
                 <Sparkles size={12} className="text-blue-500" /> Sugestões Rápidas (Clique para adicionar):
               </span>
               <div className="flex flex-wrap gap-1.5">
@@ -544,7 +544,7 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
                     key={`srv-${idx}`}
                     type="button"
                     onClick={() => addItem('service', srv.name, srv.price)}
-                    className="text-[10px] bg-blue-50/80 hover:bg-blue-100 text-blue-700 px-2.5 py-1 rounded-lg font-medium transition-all border border-blue-100 active:scale-95"
+                    className="text-[10px] bg-blue-50/80 dark:bg-blue-950/60 hover:bg-blue-100 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-2.5 py-1 rounded-lg font-medium transition-all border border-blue-100 dark:border-blue-900/50 active:scale-95"
                   >
                     + {srv.name} (R${srv.price})
                   </button>
@@ -567,7 +567,7 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
               {items.map((item, index) => (
                 <div 
                   key={item.id}
-                  className="bg-white p-3 rounded-xl border border-slate-200/90 shadow-2xs flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5"
+                  className="bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-200/90 dark:border-slate-700 shadow-2xs flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5"
                 >
                   {/* Type Selector */}
                   <select
@@ -575,8 +575,8 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
                     onChange={(e) => updateItem(item.id, 'type', e.target.value)}
                     className={`text-xs font-bold px-2.5 py-2 rounded-lg border appearance-none text-center sm:w-28 shrink-0 ${
                       item.type === 'service' 
-                        ? 'bg-blue-50 text-blue-700 border-blue-200' 
-                        : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                        ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-900/60' 
+                        : 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-900/60'
                     }`}
                   >
                     <option value="service">🛠️ Serviço</option>
@@ -593,25 +593,25 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
                       placeholder={item.type === 'service' ? 'Ex: Limpeza de notebook' : 'Ex: Placa mãe gigabyte B450m'}
                       value={item.description}
                       onChange={(e) => updateItem(item.id, 'description', e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-500"
+                      className="w-full bg-slate-50 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-xs font-medium text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
                   {/* Quantity */}
                   <div className="flex items-center gap-1 shrink-0 w-24">
-                    <span className="text-[10px] font-bold text-slate-400">Qtd:</span>
+                    <span className="text-[10px] font-bold text-slate-400 dark:text-slate-400">Qtd:</span>
                     <input
                       type="number"
                       min={1}
                       value={item.quantity}
                       onChange={(e) => updateItem(item.id, 'quantity', Math.max(1, parseInt(e.target.value) || 1))}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-2 text-xs font-bold text-slate-800 text-center focus:outline-none focus:bg-white"
+                      className="w-full bg-slate-50 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-2 text-xs font-bold text-slate-800 dark:text-slate-100 text-center focus:outline-none focus:bg-white dark:focus:bg-slate-900"
                     />
                   </div>
 
                   {/* Unit Price */}
                   <div className="flex items-center gap-1 shrink-0 w-32">
-                    <span className="text-[10px] font-bold text-slate-400">R$:</span>
+                    <span className="text-[10px] font-bold text-slate-400 dark:text-slate-400">R$:</span>
                     <input
                       type="number"
                       min={0}
@@ -619,13 +619,13 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
                       placeholder="0,00"
                       value={item.unitPrice || ''}
                       onChange={(e) => updateItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-xs font-bold text-slate-800 text-right focus:outline-none focus:bg-white"
+                      className="w-full bg-slate-50 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-2 text-xs font-bold text-slate-800 dark:text-slate-100 text-right focus:outline-none focus:bg-white dark:focus:bg-slate-900"
                     />
                   </div>
 
                   {/* Row Total */}
                   <div className="w-24 text-right shrink-0 hidden sm:block">
-                    <span className="text-xs font-extrabold text-slate-900 block">
+                    <span className="text-xs font-extrabold text-slate-900 dark:text-white block">
                       R$ {Number(item.totalPrice || (item.quantity * item.unitPrice) || 0).toFixed(2)}
                     </span>
                   </div>
@@ -634,7 +634,7 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
                   <button
                     type="button"
                     onClick={() => removeItem(item.id)}
-                    className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors shrink-0"
+                    className="p-2 text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 rounded-lg transition-colors shrink-0"
                     title="Remover Item"
                   >
                     <Trash2 size={16} />
@@ -644,18 +644,18 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
             </div>
 
             {/* Subtotals & Total Summary Card */}
-            <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-2 mt-4">
+            <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2 mt-4">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
                 <div>
-                  <span className="text-[10px] font-bold uppercase text-slate-400 block">Total Mão de Obra</span>
-                  <span className="text-sm font-bold text-blue-700">R$ {servicesCost.toFixed(2)}</span>
+                  <span className="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400 block">Total Mão de Obra</span>
+                  <span className="text-sm font-bold text-blue-700 dark:text-blue-400">R$ {servicesCost.toFixed(2)}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold uppercase text-slate-400 block">Total Peças/Produtos</span>
-                  <span className="text-sm font-bold text-emerald-700">R$ {partsCost.toFixed(2)}</span>
+                  <span className="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400 block">Total Peças/Produtos</span>
+                  <span className="text-sm font-bold text-emerald-700 dark:text-emerald-400">R$ {partsCost.toFixed(2)}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold uppercase text-slate-400 block">Desconto (R$)</span>
+                  <span className="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400 block">Desconto (R$)</span>
                   <input
                     type="number"
                     min={0}
@@ -663,33 +663,33 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
                     placeholder="0,00"
                     value={discount || ''}
                     onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
-                    className="w-24 bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-xs font-bold text-slate-800 focus:outline-none focus:bg-white"
+                    className="w-24 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-1 text-xs font-bold text-slate-800 dark:text-slate-100 focus:outline-none focus:bg-white dark:focus:bg-slate-900"
                   />
                 </div>
-                <div className="text-right sm:border-l sm:border-slate-100 sm:pl-4">
-                  <span className="text-[10px] font-bold uppercase text-slate-500 block">VALOR TOTAL ORÇADO</span>
-                  <span className="text-lg font-black text-slate-900">R$ {totalAmount.toFixed(2)}</span>
+                <div className="text-right sm:border-l sm:border-slate-100 dark:sm:border-slate-700 sm:pl-4">
+                  <span className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block">VALOR TOTAL ORÇADO</span>
+                  <span className="text-lg font-black text-slate-900 dark:text-white">R$ {totalAmount.toFixed(2)}</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Section 5: Photos & Initial State of Equipment */}
-          <div className="space-y-3 bg-slate-50/80 p-5 rounded-2xl border border-slate-200/80">
+          <div className="space-y-3 bg-slate-50/80 dark:bg-slate-800/40 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800">
             <div className="flex justify-between items-center">
               <div>
-                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                  <Camera size={16} className="text-blue-600" /> Fotos do Equipamento / Condição Inicial ({devicePhotos.length})
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <Camera size={16} className="text-blue-600 dark:text-blue-400" /> Fotos do Equipamento / Condição Inicial ({devicePhotos.length})
                 </label>
-                <p className="text-[11px] text-slate-500">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">
                   Fotos de riscos, tela, placa mãe ou peças com defeito para documentação.
                 </p>
               </div>
               <label className={`
-                cursor-pointer px-4 py-2 bg-white border border-slate-200 hover:border-blue-400 text-blue-600 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm transition-all
+                cursor-pointer px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 text-blue-600 dark:text-blue-400 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm transition-all
                 ${compressing ? 'opacity-50 pointer-events-none' : ''}
               `}>
-                {compressing ? <Loader2 size={16} className="animate-spin text-blue-600" /> : <Camera size={16} />}
+                {compressing ? <Loader2 size={16} className="animate-spin text-blue-600 dark:text-blue-400" /> : <Camera size={16} />}
                 <span>{compressing ? 'Comprimindo...' : 'Anexar Fotos'}</span>
                 <input
                   type="file"
@@ -705,13 +705,13 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
             {devicePhotos.length > 0 ? (
               <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 pt-2">
                 {devicePhotos.map((photo, index) => (
-                  <div key={index} className="relative group aspect-square bg-slate-200 rounded-xl overflow-hidden border border-slate-300/80 shadow-xs">
+                  <div key={index} className="relative group aspect-square bg-slate-200 dark:bg-slate-700 rounded-xl overflow-hidden border border-slate-300/80 dark:border-slate-700 shadow-xs">
                     <img src={photo} alt={`Foto ${index + 1}`} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 p-1">
                       <button
                         type="button"
                         onClick={() => setActivePhotoModal(photo)}
-                        className="p-1.5 bg-white/90 text-slate-700 rounded-lg hover:bg-white transition-colors"
+                        className="p-1.5 bg-white/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition-colors"
                         title="Visualizar"
                       >
                         <Eye size={14} />
@@ -732,7 +732,7 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
                 ))}
               </div>
             ) : (
-              <div className="text-center py-3 border border-dashed border-slate-200 rounded-xl bg-white/60 text-xs text-slate-400">
+              <div className="text-center py-3 border border-dashed border-slate-200 dark:border-slate-700 rounded-xl bg-white/60 dark:bg-slate-800/40 text-xs text-slate-400 dark:text-slate-500">
                 Nenhuma foto anexada. Use a câmera ou anexe arquivos de imagens.
               </div>
             )}
@@ -741,11 +741,11 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
           {/* Section 6: Terms, Validity & Status */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="text-xs font-bold text-slate-600 mb-1.5 block">Status do Orçamento</label>
+              <label className="text-xs font-bold text-slate-600 dark:text-slate-400 mb-1.5 block">Status do Orçamento</label>
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value as QuoteStatus)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value={QuoteStatus.Pending}>⏳ Em Análise / Pendente</option>
                 <option value={QuoteStatus.Approved}>✅ Aprovado pelo Cliente</option>
@@ -755,42 +755,42 @@ export default function QuoteForm({ onClose, initialQuote, onSaved }: QuoteFormP
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-600 mb-1.5 block">Validade da Proposta (Dias)</label>
+              <label className="text-xs font-bold text-slate-600 dark:text-slate-400 mb-1.5 block">Validade da Proposta (Dias)</label>
               <input
                 type="number"
                 min={1}
                 max={90}
                 value={validityDays}
                 onChange={(e) => setValidityDays(parseInt(e.target.value) || 10)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-600 mb-1.5 block">Observações / Prazos (Opcional)</label>
+              <label className="text-xs font-bold text-slate-600 dark:text-slate-400 mb-1.5 block">Observações / Prazos (Opcional)</label>
               <input
                 type="text"
                 placeholder="Ex: Prazo de 2 dias após aprovação..."
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-xs font-medium text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
 
           {/* Modal Actions */}
-          <div className="flex justify-end items-center gap-3 pt-4 border-t border-slate-100">
+          <div className="flex justify-end items-center gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2.5 rounded-xl font-bold text-xs text-slate-600 hover:bg-slate-100 transition-colors"
+              className="px-5 py-2.5 rounded-xl font-bold text-xs text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="tech-gradient text-white px-7 py-3 rounded-xl font-bold text-xs flex items-center gap-2 shadow-lg shadow-blue-200 hover:shadow-xl transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+              className="tech-gradient text-white px-7 py-3 rounded-xl font-bold text-xs flex items-center gap-2 shadow-lg shadow-blue-200 dark:shadow-none hover:shadow-xl transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
             >
               {loading ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
               <span>{initialQuote ? 'Salvar Alterações' : 'Salvar Orçamento'}</span>

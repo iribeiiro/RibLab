@@ -136,24 +136,24 @@ export default function OrderForm({ onClose }: OrderFormProps) {
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 bg-slate-900/10 backdrop-blur-sm z-[60] flex items-center justify-center p-4"
+      className="fixed inset-0 bg-slate-900/40 dark:bg-black/70 backdrop-blur-sm z-[60] flex items-center justify-center p-4"
     >
       <motion.div 
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="bg-white rounded-3xl border border-slate-200 w-full max-w-2xl shadow-2xl shadow-slate-200/50 overflow-hidden flex flex-col max-h-[90vh]"
+        className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 w-full max-w-2xl shadow-2xl shadow-slate-200/50 dark:shadow-none overflow-hidden flex flex-col max-h-[90vh] transition-colors"
       >
-        <div className="p-6 md:p-8 flex justify-between items-center border-b border-slate-100">
+        <div className="p-6 md:p-8 flex justify-between items-center border-b border-slate-100 dark:border-slate-800">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center">
               <Plus size={20} />
             </div>
             <div>
-              <h2 className="font-bold text-slate-900 tracking-tight">Nova Ordem de Serviço</h2>
-              <p className="text-xs text-slate-500 font-medium">Preencha os dados básicos do equipamento</p>
+              <h2 className="font-bold text-slate-900 dark:text-white tracking-tight">Nova Ordem de Serviço</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Preencha os dados básicos do equipamento</p>
             </div>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-900 transition-colors p-2 bg-slate-50 rounded-full">
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors p-2 bg-slate-50 dark:bg-slate-800 rounded-full">
             <X size={20} />
           </button>
         </div>
@@ -161,7 +161,7 @@ export default function OrderForm({ onClose }: OrderFormProps) {
         <form onSubmit={handleSubmit} className="p-6 md:p-8 overflow-y-auto space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4 md:col-span-2">
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Informações do Cliente</label>
+              <label className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Informações do Cliente</label>
               
               <div className="relative">
                 <div className="flex items-center gap-2 mb-2">
@@ -186,24 +186,24 @@ export default function OrderForm({ onClose }: OrderFormProps) {
                 </div>
 
                 {showCustomerResults && customerSearch.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-xl z-10 overflow-hidden max-h-48 overflow-y-auto">
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-10 overflow-hidden max-h-48 overflow-y-auto">
                     {filteredCustomers.length > 0 ? (
                       filteredCustomers.map(c => (
                         <button
                           key={c.id}
                           type="button"
                           onClick={() => handleSelectCustomer(c)}
-                          className="w-full px-4 py-3 text-left hover:bg-blue-50 flex items-center justify-between group transition-colors"
+                          className="w-full px-4 py-3 text-left hover:bg-blue-50 dark:hover:bg-slate-700/60 flex items-center justify-between group transition-colors"
                         >
                           <div>
-                            <div className="font-bold text-slate-800 text-sm">{c.name}</div>
-                            <div className="text-xs text-slate-500">{c.phone}</div>
+                            <div className="font-bold text-slate-800 dark:text-slate-100 text-sm">{c.name}</div>
+                            <div className="text-xs text-slate-500 dark:text-slate-400">{c.phone}</div>
                           </div>
                           <ChevronRight size={16} className="text-slate-300 group-hover:text-blue-500 transition-colors" />
                         </button>
                       ))
                     ) : (
-                      <div className="px-4 py-4 text-center text-xs text-slate-400 italic">
+                      <div className="px-4 py-4 text-center text-xs text-slate-400 dark:text-slate-500 italic">
                         Nenhum cliente encontrado. Preencha manualmente abaixo.
                       </div>
                     )}
@@ -250,21 +250,21 @@ export default function OrderForm({ onClose }: OrderFormProps) {
             </div>
 
             {/* Photos Section */}
-            <div className="space-y-3 md:col-span-2 bg-slate-50/80 p-4 rounded-2xl border border-slate-200/80">
+            <div className="space-y-3 md:col-span-2 bg-slate-50/80 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800">
               <div className="flex justify-between items-center">
                 <div>
-                  <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                    <Camera size={16} className="text-blue-600" /> Fotos do Equipamento / Estado Físico
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <Camera size={16} className="text-blue-600 dark:text-blue-400" /> Fotos do Equipamento / Estado Físico
                   </label>
-                  <p className="text-[11px] text-slate-500">
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
                     Anexe fotos do estado do produto (riscos, avarias, teclado, tela) para comprovação na OS / PDF.
                   </p>
                 </div>
                 <label className={`
-                  cursor-pointer px-4 py-2 bg-white border border-slate-200 hover:border-blue-400 text-blue-600 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm transition-all
+                  cursor-pointer px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-400 text-blue-600 dark:text-blue-400 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm transition-all
                   ${compressing ? 'opacity-50 pointer-events-none' : ''}
                 `}>
-                  {compressing ? <Loader2 size={16} className="animate-spin text-blue-600" /> : <Camera size={16} />}
+                  {compressing ? <Loader2 size={16} className="animate-spin text-blue-600 dark:text-blue-400" /> : <Camera size={16} />}
                   <span>{compressing ? 'Processando...' : 'Adicionar Fotos'}</span>
                   <input
                     type="file"
@@ -280,7 +280,7 @@ export default function OrderForm({ onClose }: OrderFormProps) {
               {devicePhotos.length > 0 ? (
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 pt-2">
                   {devicePhotos.map((photo, index) => (
-                    <div key={index} className="relative group aspect-square bg-slate-200 rounded-xl overflow-hidden border border-slate-300/80 shadow-xs">
+                    <div key={index} className="relative group aspect-square bg-slate-200 dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-300/80 dark:border-slate-700 shadow-xs">
                       <img src={photo} alt={`Foto ${index + 1}`} className="w-full h-full object-cover" />
                       <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 p-1">
                         <button
@@ -307,7 +307,7 @@ export default function OrderForm({ onClose }: OrderFormProps) {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-4 border border-dashed border-slate-200 rounded-xl bg-white/60 text-xs text-slate-400">
+                <div className="text-center py-4 border border-dashed border-slate-200 dark:border-slate-800 rounded-xl bg-white/60 dark:bg-slate-800/40 text-xs text-slate-400 dark:text-slate-500">
                   Nenhuma foto anexada. Clique em "Adicionar Fotos" ou tire fotos com a câmera do celular/computador.
                 </div>
               )}
@@ -335,16 +335,16 @@ export default function OrderForm({ onClose }: OrderFormProps) {
               <InputWrapper label="Peças">
                 <input type="number" className="input-field" value={formData.partsCost} onChange={e => setFormData({...formData, partsCost: Number(e.target.value)})} />
               </InputWrapper>
-              <div className="flex flex-col justify-center bg-blue-50/50 rounded-xl px-4 border border-blue-100">
-                <span className="text-[10px] font-bold text-blue-600 uppercase">Total Estimado</span>
-                <span className="text-xl font-bold text-blue-700">R$ {(Number(formData.serviceCost) + Number(formData.partsCost)).toFixed(2)}</span>
+              <div className="flex flex-col justify-center bg-blue-50/50 dark:bg-blue-950/40 rounded-xl px-4 border border-blue-100 dark:border-blue-900/50">
+                <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase">Total Estimado</span>
+                <span className="text-xl font-bold text-blue-700 dark:text-blue-300">R$ {(Number(formData.serviceCost) + Number(formData.partsCost)).toFixed(2)}</span>
               </div>
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
-            <button type="button" onClick={onClose} className="px-6 py-2.5 rounded-xl font-semibold text-slate-500 hover:bg-slate-100 transition-colors">Cancelar</button>
-            <button type="submit" disabled={loading} className="px-8 py-2.5 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-all shadow-lg shadow-blue-50 disabled:opacity-50">
+          <div className="flex justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <button type="button" onClick={onClose} className="px-6 py-2.5 rounded-xl font-semibold text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancelar</button>
+            <button type="submit" disabled={loading} className="px-8 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-all shadow-lg shadow-blue-50 dark:shadow-none disabled:opacity-50">
               {loading ? 'Salvando...' : 'Criar Ordem'}
             </button>
           </div>
@@ -375,7 +375,7 @@ export default function OrderForm({ onClose }: OrderFormProps) {
 function InputWrapper({ label, children }: { label: string, children: React.ReactNode }) {
   return (
     <div className="space-y-1.5 text-left">
-      <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-tight">{label}</label>
+      <label className="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight">{label}</label>
       {children}
     </div>
   );

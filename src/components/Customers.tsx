@@ -98,13 +98,13 @@ export default function Customers() {
     <div className="space-y-6">
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Clientes</h2>
-          <p className="text-slate-500 font-medium text-sm sm:text-base">Base de dados de clientes cadastrados</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Clientes</h2>
+          <p className="text-slate-500 dark:text-slate-400 font-medium text-sm sm:text-base">Base de dados de clientes cadastrados</p>
         </div>
         
         <button 
           onClick={() => setShowForm(true)}
-          className="flex items-center justify-center gap-2 tech-gradient text-white px-6 py-4 rounded-2xl font-bold transition-all active:scale-95 group shadow-lg shadow-blue-100"
+          className="flex items-center justify-center gap-2 tech-gradient text-white px-6 py-4 rounded-2xl font-bold transition-all active:scale-95 group shadow-lg shadow-blue-100 dark:shadow-none cursor-pointer"
         >
           <UserPlus size={20} />
           <span>Novo Cliente</span>
@@ -112,11 +112,11 @@ export default function Customers() {
       </header>
 
       <div className="relative group">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={20} />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 group-focus-within:text-blue-500 transition-colors" size={20} />
         <input 
           type="text" 
           placeholder="Buscar por nome ou telefone..."
-          className="w-full bg-white border border-slate-200 rounded-2xl pl-12 pr-4 py-4 focus:ring-4 focus:ring-blue-50 focus:border-blue-300 outline-none transition-all shadow-sm"
+          className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white rounded-2xl pl-12 pr-4 py-4 focus:ring-4 focus:ring-blue-50 dark:focus:ring-blue-900/30 focus:border-blue-300 dark:focus:border-blue-700 outline-none transition-all shadow-sm"
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
         />
@@ -129,30 +129,30 @@ export default function Customers() {
             key={customer.id}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow group relative"
+            className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow group relative"
           >
             <div className="absolute top-4 right-4 flex items-center gap-2">
               <button 
                 onClick={() => handleEdit(customer)}
-                className="text-slate-300 hover:text-blue-500 transition-colors md:opacity-0 group-hover:opacity-100"
+                className="text-slate-300 dark:text-slate-600 hover:text-blue-500 dark:hover:text-blue-400 transition-colors md:opacity-0 group-hover:opacity-100 cursor-pointer"
               >
                 <Edit2 size={18} />
               </button>
               <button 
                 onClick={() => handleDelete(customer.id!)}
-                className="text-slate-300 hover:text-red-500 transition-colors md:opacity-0 group-hover:opacity-100"
+                className="text-slate-300 dark:text-slate-600 hover:text-red-500 dark:hover:text-red-400 transition-colors md:opacity-0 group-hover:opacity-100 cursor-pointer"
               >
                 <Trash2 size={18} />
               </button>
             </div>
 
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-500 font-bold text-lg">
+              <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center text-slate-500 dark:text-slate-300 font-bold text-lg">
                 {customer.name.charAt(0).toUpperCase()}
               </div>
               <div>
-                <h3 className="font-bold text-slate-900">{customer.name}</h3>
-                <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                <h3 className="font-bold text-slate-900 dark:text-white">{customer.name}</h3>
+                <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
                   <Phone size={12} /> {customer.phone}
                 </div>
               </div>
@@ -161,7 +161,7 @@ export default function Customers() {
             <div className="flex gap-2 mb-6">
               <a 
                 href={`tel:${customer.phone.replace(/\D/g, '')}`}
-                className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl text-slate-600 text-xs font-bold transition-colors border border-slate-100"
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl text-slate-600 dark:text-slate-300 text-xs font-bold transition-colors border border-slate-100 dark:border-slate-700"
               >
                 <Phone size={14} /> LIGAR
               </a>
@@ -169,7 +169,7 @@ export default function Customers() {
                 href={formatWhatsAppLink(customer.phone)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-green-50 hover:bg-green-100 rounded-xl text-green-700 text-xs font-bold transition-colors border border-green-100"
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-green-50 dark:bg-green-950/40 hover:bg-green-100 dark:hover:bg-green-900/40 rounded-xl text-green-700 dark:text-green-300 text-xs font-bold transition-colors border border-green-100 dark:border-green-900/60"
               >
                 <MessageCircle size={14} /> WHATSAPP
               </a>
@@ -181,7 +181,7 @@ export default function Customers() {
         ))}
 
         {filteredCustomers.length === 0 && (
-          <div className="col-span-full py-20 text-center text-slate-400 italic">
+          <div className="col-span-full py-20 text-center text-slate-400 dark:text-slate-500 italic">
             Nenhum cliente encontrado...
           </div>
         )}
@@ -190,14 +190,14 @@ export default function Customers() {
       {/* Form Modal */}
       <AnimatePresence>
         {showForm && (
-          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <motion.div 
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-[2.5rem] w-full max-w-2xl shadow-2xl overflow-hidden"
+              className="bg-white dark:bg-slate-900 rounded-[2.5rem] w-full max-w-2xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800"
             >
-              <div className="p-8 border-b border-slate-100 flex items-center justify-between tech-gradient text-white">
+              <div className="p-8 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between tech-gradient text-white">
                 <div className="flex items-center gap-3">
                   <div className="bg-white/20 p-2 rounded-xl">
                     {editingId ? <Edit2 size={24} /> : <UserPlus size={24} />}
@@ -211,7 +211,7 @@ export default function Customers() {
                     </p>
                   </div>
                 </div>
-                <button onClick={handleCloseForm} className="hover:rotate-90 transition-transform p-1">
+                <button onClick={handleCloseForm} className="hover:rotate-90 transition-transform p-1 cursor-pointer">
                   <X />
                 </button>
               </div>
@@ -219,11 +219,11 @@ export default function Customers() {
               <form onSubmit={handleSubmit} className="p-8 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="md:col-span-2">
-                    <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2 block">Nome Completo</label>
+                    <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-400 mb-2 block">Nome Completo</label>
                     <input 
                       required
                       type="text"
-                      className="tech-input"
+                      className="tech-input bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
                       value={formData.name}
                       onChange={e => setFormData({...formData, name: e.target.value})}
                       placeholder="Ex: João Silva"
@@ -231,11 +231,11 @@ export default function Customers() {
                   </div>
                   
                   <div className="md:col-span-2">
-                    <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2 block">Telefone</label>
+                    <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-400 mb-2 block">Telefone</label>
                     <input 
                       required
                       type="text"
-                      className="tech-input"
+                      className="tech-input bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
                       value={formData.phone}
                       onChange={e => setFormData({...formData, phone: e.target.value})}
                       placeholder="(00) 00000-0000"
@@ -243,18 +243,18 @@ export default function Customers() {
                   </div>
                 </div>
 
-                <div className="pt-6 flex gap-3 border-t border-slate-100">
+                <div className="pt-6 flex gap-3 border-t border-slate-100 dark:border-slate-800">
                   <button 
                     type="button" 
                     onClick={handleCloseForm} 
-                    className="flex-1 px-6 py-4 font-bold text-slate-400 font-mono text-xs hover:bg-slate-50 rounded-2xl transition-colors"
+                    className="flex-1 px-6 py-4 font-bold text-slate-400 dark:text-slate-400 font-mono text-xs hover:bg-slate-50 dark:hover:bg-slate-800 rounded-2xl transition-colors"
                   >
                     // CANCELAR
                   </button>
                   <button 
                     disabled={loading}
                     type="submit" 
-                    className="flex-2 bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold tech-gradient flex items-center justify-center gap-2 hover:scale-[1.02] transition-all disabled:opacity-50 shadow-lg shadow-blue-100"
+                    className="flex-2 bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold tech-gradient flex items-center justify-center gap-2 hover:scale-[1.02] transition-all disabled:opacity-50 shadow-lg shadow-blue-100 dark:shadow-none cursor-pointer"
                   >
                     <Save size={18} />
                     {loading ? 'SALVANDO...' : editingId ? 'ATUALIZAR PERFIL' : 'CADASTRAR CLIENTE'}

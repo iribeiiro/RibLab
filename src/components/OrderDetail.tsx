@@ -13,14 +13,16 @@ interface OrderDetailProps {
 }
 
 export default function OrderDetail({ order, onClose }: OrderDetailProps) {
+  if (!order) return null;
+
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [report, setReport] = useState(order.technicalReport || '');
-  const [status, setStatus] = useState<OrderStatus>(order.status);
+  const [status, setStatus] = useState<OrderStatus>(order.status || OrderStatus.Pending);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(order.paymentMethod || PaymentMethod.Pix);
-  const [partsCost, setPartsCost] = useState(order.partsCost);
-  const [serviceCost, setServiceCost] = useState(order.serviceCost);
+  const [partsCost, setPartsCost] = useState(order.partsCost || 0);
+  const [serviceCost, setServiceCost] = useState(order.serviceCost || 0);
   const [devicePhotos, setDevicePhotos] = useState<string[]>(order.devicePhotos || []);
   const [compressing, setCompressing] = useState(false);
   const [activePhotoModal, setActivePhotoModal] = useState<string | null>(null);
@@ -81,17 +83,16 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
   };
 
   const handleDeleteOrder = async () => {
-    if (!order?.id) return;
+    if (!order?.id || deleting) return;
     const orderId = order.id;
     setDeleting(true);
     try {
+      await deleteDoc(doc(db, 'serviceOrders', orderId));
       setShowDeleteConfirm(false);
       onClose();
-      await deleteDoc(doc(db, 'serviceOrders', orderId));
     } catch (error) {
       console.error("Error deleting order in detail:", error);
       handleFirestoreError(error, OperationType.DELETE, `serviceOrders/${orderId}`);
-    } finally {
       setDeleting(false);
     }
   };
@@ -100,19 +101,19 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 bg-slate-900/10 backdrop-blur-sm z-[70] flex items-center justify-center p-4 print:hidden"
+      className="fixed inset-0 bg-slate-900/40 dark:bg-black/70 backdrop-blur-sm z-[70] flex items-center justify-center p-4 print:hidden"
     >
       <motion.div 
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="bg-white rounded-3xl border border-slate-200 w-full max-w-4xl shadow-2xl shadow-slate-200/50 overflow-hidden flex flex-col max-h-[90vh]"
+        className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 w-full max-w-4xl shadow-2xl shadow-slate-200/50 dark:shadow-none overflow-hidden flex flex-col max-h-[90vh] transition-colors"
       >
-        <div className="p-6 md:p-8 flex justify-between items-center border-b border-slate-100">
+        <div className="p-6 md:p-8 flex justify-between items-center border-b border-slate-100 dark:border-slate-800">
           <div className="flex items-center gap-3">
-            <div className="bg-slate-50 text-slate-500 px-3 py-1 rounded-lg text-xs font-bold tracking-tight">#{order.orderNumber}</div>
-            <h2 className="font-bold text-slate-900 tracking-tight text-lg">{order.customerName}</h2>
+            <div className="bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-3 py-1 rounded-lg text-xs font-bold tracking-tight">#{order.orderNumber}</div>
+            <h2 className="font-bold text-slate-900 dark:text-white tracking-tight text-lg">{order.customerName}</h2>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-900 transition-colors p-2 bg-slate-50 rounded-full">
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors p-2 bg-slate-50 dark:bg-slate-800 rounded-full">
             <X size={20} />
           </button>
         </div>
@@ -128,13 +129,13 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {/* Left Col: Problem Description */}
             <div className="space-y-4">
-              <label className="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Reclamação do Cliente</label>
-              <div className="bg-slate-50 p-6 rounded-2xl text-slate-700 leading-relaxed">
+              <label className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-widest">Reclamação do Cliente</label>
+              <div className="bg-slate-50 dark:bg-slate-800/60 p-6 rounded-2xl text-slate-700 dark:text-slate-200 leading-relaxed border border-slate-100 dark:border-slate-800">
                 {order.problemDescription}
               </div>
               
               <div className="pt-6 space-y-4">
-                <label className="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Status Atual</label>
+                <label className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-widest">Status Atual</label>
                 <div className="flex flex-wrap gap-2">
                   {Object.values(OrderStatus).map((s) => (
                     <button
@@ -143,8 +144,8 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
                       className={`
                         px-4 py-2 text-[10px] font-bold rounded-xl transition-all border
                         ${status === s 
-                          ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-100' 
-                          : 'bg-white border-slate-200 text-slate-500 hover:border-slate-300'}
+                          ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-100 dark:shadow-none' 
+                          : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600'}
                       `}
                     >
                       {s === OrderStatus.Pending ? 'Pendente' : 
@@ -160,7 +161,7 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
 
             {/* Right Col: Technical Report & Costs */}
             <div className="space-y-4">
-              <label className="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Relatório Técnico</label>
+              <label className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-widest">Relatório Técnico</label>
               <textarea 
                 rows={5}
                 className="input-field resize-none py-4"
@@ -171,7 +172,7 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
 
               <div className="grid grid-cols-2 gap-4 pt-4">
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-500 mb-1 tracking-tight">Forma de Pagamento</label>
+                  <label className="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1 tracking-tight">Forma de Pagamento</label>
                   <select 
                     className="input-field"
                     value={paymentMethod}
@@ -183,13 +184,13 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-500 mb-1 tracking-tight">Garantia (Meses)</label>
-                  <div className="input-field flex items-center bg-slate-50 opacity-50 cursor-not-allowed">
+                  <label className="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1 tracking-tight">Garantia (Meses)</label>
+                  <div className="input-field flex items-center bg-slate-50 dark:bg-slate-800 opacity-50 cursor-not-allowed">
                     <span className="text-xs">3 Meses (Fix)</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-500 mb-1 tracking-tight">Serviço (R$)</label>
+                  <label className="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1 tracking-tight">Serviço (R$)</label>
                   <input 
                     type="number"
                     className="input-field font-bold"
@@ -198,7 +199,7 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-500 mb-1 tracking-tight">Peças (R$)</label>
+                  <label className="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1 tracking-tight">Peças (R$)</label>
                   <input 
                     type="number"
                     className="input-field font-bold"
@@ -211,21 +212,21 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
           </div>
 
           {/* Photos Management Section */}
-          <div className="space-y-3 bg-slate-50/80 p-5 rounded-2xl border border-slate-200/80">
+          <div className="space-y-3 bg-slate-50/80 dark:bg-slate-800/50 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800">
             <div className="flex justify-between items-center">
               <div>
-                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                  <Camera size={16} className="text-blue-600" /> Registro Fotográfico do Equipamento ({devicePhotos.length})
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <Camera size={16} className="text-blue-600 dark:text-blue-400" /> Registro Fotográfico do Equipamento ({devicePhotos.length})
                 </label>
-                <p className="text-[11px] text-slate-500">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">
                   Fotos salvas para comprovação e inclusão automática no PDF/Comprovante impresso.
                 </p>
               </div>
               <label className={`
-                cursor-pointer px-4 py-2 bg-white border border-slate-200 hover:border-blue-400 text-blue-600 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm transition-all
+                cursor-pointer px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-400 text-blue-600 dark:text-blue-400 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm transition-all
                 ${compressing ? 'opacity-50 pointer-events-none' : ''}
               `}>
-                {compressing ? <Loader2 size={16} className="animate-spin text-blue-600" /> : <Camera size={16} />}
+                {compressing ? <Loader2 size={16} className="animate-spin text-blue-600 dark:text-blue-400" /> : <Camera size={16} />}
                 <span>{compressing ? 'Processando...' : 'Adicionar Foto'}</span>
                 <input
                   type="file"
@@ -241,7 +242,7 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
             {devicePhotos.length > 0 ? (
               <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 pt-2">
                 {devicePhotos.map((photo, index) => (
-                  <div key={index} className="relative group aspect-square bg-slate-200 rounded-xl overflow-hidden border border-slate-300/80 shadow-xs">
+                  <div key={index} className="relative group aspect-square bg-slate-200 dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-300/80 dark:border-slate-700 shadow-xs">
                     <img src={photo} alt={`Foto ${index + 1}`} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 p-1">
                       <button
@@ -268,24 +269,24 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-4 border border-dashed border-slate-200 rounded-xl bg-white/60 text-xs text-slate-400">
+              <div className="text-center py-4 border border-dashed border-slate-200 dark:border-slate-800 rounded-xl bg-white/60 dark:bg-slate-800/40 text-xs text-slate-400 dark:text-slate-500">
                 Nenhuma foto registrada para esta OS. Clique em "Adicionar Foto" para anexar imagens da entrada/estado do produto.
               </div>
             )}
           </div>
         </div>
 
-        <div className="p-8 flex justify-between items-center border-t border-slate-100 bg-slate-50/50">
+        <div className="p-8 flex justify-between items-center border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40">
           <div className="flex flex-col">
-            <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Valor Final</span>
-            <span className="text-3xl font-bold text-slate-900 tracking-tight">R$ {(Number(partsCost) + Number(serviceCost)).toFixed(2)}</span>
+            <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">Valor Final</span>
+            <span className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">R$ {(Number(partsCost) + Number(serviceCost)).toFixed(2)}</span>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
             <button
               type="button"
               onClick={() => setShowDeleteConfirm(true)}
-              className="px-4 py-3 border border-red-200 text-red-600 hover:bg-red-50 transition-colors rounded-xl font-bold flex items-center gap-2 text-xs"
+              className="px-4 py-3 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors rounded-xl font-bold flex items-center gap-2 text-xs"
               title="Excluir esta OS"
             >
               <Trash2 size={16} />
@@ -294,16 +295,16 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
             <button 
               type="button"
               onClick={() => setShowPrint(true)}
-              className="px-5 py-3 border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors rounded-xl font-bold flex items-center gap-2 text-xs"
+              className="px-5 py-3 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors rounded-xl font-bold flex items-center gap-2 text-xs"
             >
               <Printer size={16} />
               IMPRIMIR / PDF
             </button>
-            <button onClick={onClose} className="px-6 py-3 font-semibold text-slate-500 hover:bg-slate-200/50 transition-colors rounded-xl font-mono text-xs">// CANCELAR</button>
+            <button onClick={onClose} className="px-6 py-3 font-semibold text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-colors rounded-xl font-mono text-xs">// CANCELAR</button>
             <button 
               onClick={handleUpdate}
               disabled={loading}
-              className="tech-gradient text-white px-8 py-3 rounded-2xl font-bold transition-all flex items-center gap-2 disabled:opacity-50 active:scale-95 shadow-lg shadow-blue-100"
+              className="tech-gradient text-white px-8 py-3 rounded-2xl font-bold transition-all flex items-center gap-2 disabled:opacity-50 active:scale-95 shadow-lg shadow-blue-100 dark:shadow-none"
             >
               <Save size={18} />
               {loading ? 'SINCRONIZANDO...' : 'SALVAR ALTERAÇÕES'}
@@ -315,32 +316,32 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
       {/* Delete Confirmation Modal */}
       <AnimatePresence>
         {showDeleteConfirm && (
-          <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-slate-900/70 dark:bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200 space-y-6"
+              className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-800 space-y-6"
             >
               <div className="flex items-center justify-between">
-                <div className="w-12 h-12 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 rounded-2xl flex items-center justify-center">
                   <AlertTriangle size={24} />
                 </div>
                 <button
                   type="button"
                   onClick={() => !deleting && setShowDeleteConfirm(false)}
-                  className="text-slate-400 hover:text-slate-700 p-2 rounded-full hover:bg-slate-100 transition-colors"
+                  className="text-slate-400 hover:text-slate-700 dark:hover:text-white p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 >
                   <X size={18} />
                 </button>
               </div>
 
               <div>
-                <h3 className="text-xl font-bold text-slate-900 tracking-tight">Excluir Ordem #{order.orderNumber}?</h3>
-                <p className="text-sm text-slate-500 mt-2 leading-relaxed">
-                  Tem certeza que deseja excluir permanentemente a OS <strong className="text-slate-800">#{order.orderNumber}</strong> de <strong className="text-slate-800">{order.customerName}</strong> ({order.deviceType} {order.deviceBrand} {order.deviceModel})?
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">Excluir Ordem #{order.orderNumber}?</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+                  Tem certeza que deseja excluir permanentemente a OS <strong className="text-slate-800 dark:text-slate-200">#{order.orderNumber}</strong> de <strong className="text-slate-800 dark:text-slate-200">{order.customerName}</strong> ({order.deviceType} {order.deviceBrand} {order.deviceModel})?
                 </p>
-                <div className="mt-3 p-3 bg-red-50/50 border border-red-100 rounded-xl text-xs text-red-600 font-medium">
+                <div className="mt-3 p-3 bg-red-50/50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/50 rounded-xl text-xs text-red-600 dark:text-red-400 font-medium">
                   Esta ação é irreversível e removerá todos os dados e histórico desta ordem.
                 </div>
               </div>
@@ -350,7 +351,7 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
                   type="button"
                   onClick={() => setShowDeleteConfirm(false)}
                   disabled={deleting}
-                  className="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition-colors"
+                  className="flex-1 py-3 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold rounded-xl text-xs transition-colors"
                 >
                   Cancelar
                 </button>
@@ -358,7 +359,7 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
                   type="button"
                   onClick={handleDeleteOrder}
                   disabled={deleting}
-                  className="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs transition-colors flex items-center justify-center gap-2 shadow-lg shadow-red-100 active:scale-95 disabled:opacity-50"
+                  className="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs transition-colors flex items-center justify-center gap-2 shadow-lg shadow-red-100 dark:shadow-none active:scale-95 disabled:opacity-50"
                 >
                   {deleting ? (
                     <>
@@ -398,18 +399,18 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
 
       {/* Print prompt overlay (when marked ready/completed) */}
       {showPrintPrompt && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[90] flex items-center justify-center p-4 print:hidden">
+        <div className="fixed inset-0 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm z-[90] flex items-center justify-center p-4 print:hidden">
           <motion.div 
             initial={{ scale: 0.95 }}
             animate={{ scale: 1 }}
-            className="bg-white rounded-3xl p-8 max-w-sm w-full text-center space-y-6 shadow-2xl border border-slate-200"
+            className="bg-white dark:bg-slate-900 rounded-3xl p-8 max-w-sm w-full text-center space-y-6 shadow-2xl border border-slate-200 dark:border-slate-800"
           >
-            <div className="w-16 h-16 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mx-auto text-3xl font-extrabold animate-bounce">
+            <div className="w-16 h-16 bg-green-50 dark:bg-green-950/50 text-green-600 dark:text-green-400 rounded-2xl flex items-center justify-center mx-auto text-3xl font-extrabold animate-bounce">
               🎉
             </div>
             <div>
-              <h3 className="font-extrabold text-slate-900 tracking-tight text-xl">Ordem de Serviço Concluída!</h3>
-              <p className="text-xs text-slate-500 mt-2 font-medium">Esta Ordem de Serviço foi atualizada para "Concluído" com sucesso. Deseja imprimir o comprovante ou gerar o PDF para o cliente agora?</p>
+              <h3 className="font-extrabold text-slate-900 dark:text-white tracking-tight text-xl">Ordem de Serviço Concluída!</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 font-medium">Esta Ordem de Serviço foi atualizada para "Concluído" com sucesso. Deseja imprimir o comprovante ou gerar o PDF para o cliente agora?</p>
             </div>
             <div className="flex flex-col gap-2">
               <button
@@ -418,7 +419,7 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
                   setShowPrintPrompt(false);
                   setShowPrint(true);
                 }}
-                className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-100"
+                className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-100 dark:shadow-none"
               >
                 <Printer size={14} /> IMPRIMIR / PDF
               </button>
@@ -428,7 +429,7 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
                   setShowPrintPrompt(false);
                   onClose();
                 }}
-                className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-xl text-xs transition-colors"
+                className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-xl text-xs transition-colors"
               >
                 NÃO, SÓ FECHAR
               </button>
@@ -462,11 +463,11 @@ export default function OrderDetail({ order, onClose }: OrderDetailProps) {
 function InfoBlock({ icon, label, value, subValue }: { icon: React.ReactNode, label: string, value: string, subValue?: string }) {
   return (
     <div className="space-y-1.5">
-      <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 tracking-widest uppercase">
+      <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 dark:text-slate-500 tracking-widest uppercase">
         {icon} {label}
       </div>
-      <div className="font-bold text-slate-900 tracking-tight">{value}</div>
-      {subValue && <div className="text-xs text-slate-500 font-medium">{subValue}</div>}
+      <div className="font-bold text-slate-900 dark:text-white tracking-tight">{value}</div>
+      {subValue && <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">{subValue}</div>}
     </div>
   );
 }

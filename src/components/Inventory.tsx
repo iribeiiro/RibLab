@@ -129,26 +129,26 @@ export default function Inventory() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-slate-100 p-1 rounded-xl w-fit">
+      <div className="flex gap-1 bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl w-fit">
         <button 
           onClick={() => setActiveTab('stock')}
-          className={`px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'stock' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:bg-slate-200'}`}
+          className={`px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'stock' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700/50'}`}
         >
           Estoque
         </button>
         <button 
           onClick={() => setActiveTab('sales')}
-          className={`px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'sales' ? 'bg-white text-green-600 shadow-sm' : 'text-slate-500 hover:bg-slate-200'}`}
+          className={`px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'sales' ? 'bg-white dark:bg-slate-700 text-green-600 dark:text-green-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700/50'}`}
         >
           Vendas
         </button>
       </div>
 
       {activeTab === 'stock' ? (
-        <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
-              <thead className="bg-[#F8FAFC] text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em]">
+              <thead className="bg-[#F8FAFC] dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em]">
                 <tr>
                   <th className="px-8 py-5">Produto</th>
                   <th className="px-8 py-5">Qtd</th>
@@ -158,22 +158,22 @@ export default function Inventory() {
                   <th className="px-8 py-5 text-right">Ações</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {items.map((item) => (
-                  <tr key={item.id} className="hover:bg-slate-50/50 transition-colors">
+                  <tr key={item.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors">
                     <td className="px-8 py-5">
-                      <div className="font-bold text-slate-900">{item.name}</div>
-                      {item.description && <div className="text-xs text-slate-500">{item.description}</div>}
+                      <div className="font-bold text-slate-900 dark:text-white">{item.name}</div>
+                      {item.description && <div className="text-xs text-slate-500 dark:text-slate-400">{item.description}</div>}
                     </td>
                     <td className="px-8 py-5">
-                      <span className={`font-mono font-bold ${item.quantity <= 2 ? 'text-red-500' : 'text-slate-600'}`}>
+                      <span className={`font-mono font-bold ${item.quantity <= 2 ? 'text-red-500 dark:text-red-400' : 'text-slate-600 dark:text-slate-300'}`}>
                         {item.quantity}
                       </span>
                     </td>
-                    <td className="px-8 py-5 text-slate-500 font-mono text-sm">R$ {item.costPrice.toFixed(2)}</td>
-                    <td className="px-8 py-5 text-slate-900 font-bold font-mono text-sm">R$ {item.salePrice.toFixed(2)}</td>
+                    <td className="px-8 py-5 text-slate-500 dark:text-slate-400 font-mono text-sm">R$ {item.costPrice.toFixed(2)}</td>
+                    <td className="px-8 py-5 text-slate-900 dark:text-white font-bold font-mono text-sm">R$ {item.salePrice.toFixed(2)}</td>
                     <td className="px-8 py-5">
-                      <span className="text-green-600 font-bold text-sm bg-green-50 px-2 py-1 rounded-lg">
+                      <span className="text-green-600 dark:text-green-400 font-bold text-sm bg-green-50 dark:bg-green-950/50 px-2 py-1 rounded-lg">
                         + R$ {(item.salePrice - item.costPrice).toFixed(2)}
                       </span>
                     </td>
@@ -183,13 +183,13 @@ export default function Inventory() {
                           onClick={() => handleSale(item)}
                           disabled={item.quantity <= 0}
                           title="Vender 1 unidade"
-                          className="bg-green-600 text-white p-2 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-30"
+                          className="bg-green-600 text-white p-2 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-30 cursor-pointer"
                         >
                           <ShoppingBag size={16} />
                         </button>
                         <button 
                           onClick={() => handleDelete(item.id!)}
-                          className="text-slate-300 hover:text-red-500 p-2 transition-colors"
+                          className="text-slate-300 dark:text-slate-600 hover:text-red-500 dark:hover:text-red-400 p-2 transition-colors cursor-pointer"
                         >
                           <Trash2 size={16} />
                         </button>
@@ -199,7 +199,7 @@ export default function Inventory() {
                 ))}
                 {items.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="px-8 py-20 text-center text-slate-400 font-medium opacity-60">
+                    <td colSpan={6} className="px-8 py-20 text-center text-slate-400 dark:text-slate-500 font-medium opacity-60">
                       Nenhum item cadastrado no estoque...
                     </td>
                   </tr>
@@ -209,10 +209,10 @@ export default function Inventory() {
           </div>
         </div>
       ) : (
-        <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
            <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
-              <thead className="bg-[#F8FAFC] text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em]">
+              <thead className="bg-[#F8FAFC] dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em]">
                 <tr>
                   <th className="px-8 py-5">Data</th>
                   <th className="px-8 py-5">Produto</th>
@@ -221,17 +221,17 @@ export default function Inventory() {
                   <th className="px-8 py-5">Lucro</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {sales.map((sale) => (
-                  <tr key={sale.id} className="hover:bg-slate-50/50 transition-colors">
-                    <td className="px-8 py-5 font-mono text-xs text-slate-500 whitespace-nowrap">
+                  <tr key={sale.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors">
+                    <td className="px-8 py-5 font-mono text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">
                       {sale.soldAt?.toDate().toLocaleString('pt-BR')}
                     </td>
-                    <td className="px-8 py-5 font-bold text-slate-900">{sale.productName}</td>
-                    <td className="px-8 py-5 text-slate-600 font-mono">{sale.quantity}</td>
-                    <td className="px-8 py-5 font-bold text-slate-900 font-mono text-sm">R$ {sale.salePrice.toFixed(2)}</td>
+                    <td className="px-8 py-5 font-bold text-slate-900 dark:text-white">{sale.productName}</td>
+                    <td className="px-8 py-5 text-slate-600 dark:text-slate-300 font-mono">{sale.quantity}</td>
+                    <td className="px-8 py-5 font-bold text-slate-900 dark:text-white font-mono text-sm">R$ {sale.salePrice.toFixed(2)}</td>
                     <td className="px-8 py-5">
-                      <div className="flex items-center gap-1.5 text-green-600 font-bold text-sm">
+                      <div className="flex items-center gap-1.5 text-green-600 dark:text-green-400 font-bold text-sm">
                         <ArrowUpRight size={14} />
                         R$ {sale.profit.toFixed(2)}
                       </div>
@@ -240,7 +240,7 @@ export default function Inventory() {
                 ))}
                 {sales.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="px-8 py-20 text-center text-slate-400 font-medium opacity-60">
+                    <td colSpan={5} className="px-8 py-20 text-center text-slate-400 dark:text-slate-500 font-medium opacity-60">
                       Nenhuma venda registrada ainda...
                     </td>
                   </tr>
@@ -254,85 +254,85 @@ export default function Inventory() {
       {/* Form Modal */}
       <AnimatePresence>
         {showForm && (
-          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-6">
+          <div className="fixed inset-0 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6">
             <motion.div 
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-[2rem] w-full max-w-lg shadow-2xl overflow-hidden"
+              className="bg-white dark:bg-slate-900 rounded-[2rem] w-full max-w-lg shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800"
             >
-              <div className="p-8 border-b border-slate-100 flex items-center justify-between tech-gradient text-white">
+              <div className="p-8 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between tech-gradient text-white">
                 <div className="flex items-center gap-3">
                   <div className="bg-white/20 p-2 rounded-lg">
                     <Package size={20} />
                   </div>
                   <h2 className="text-xl font-bold tracking-tight">Cadastro de Produto</h2>
                 </div>
-                <button onClick={() => setShowForm(false)} className="hover:rotate-90 transition-transform"><X /></button>
+                <button onClick={() => setShowForm(false)} className="hover:rotate-90 transition-transform cursor-pointer"><X /></button>
               </div>
 
               <form onSubmit={handleSubmit} className="p-8 space-y-6">
                 <div>
-                  <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2 block">Nome do Produto</label>
+                  <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-400 mb-2 block">Nome do Produto</label>
                   <input 
                     required
                     type="text"
-                    className="tech-input"
+                    className="tech-input bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
                     value={formData.name}
                     onChange={e => setFormData({...formData, name: e.target.value})}
                     placeholder="Ex: SSD 480GB Kingston"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2 block">Descrição (Opcional)</label>
+                  <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-400 mb-2 block">Descrição (Opcional)</label>
                   <input 
                     type="text"
-                    className="tech-input"
+                    className="tech-input bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
                     value={formData.description}
                     onChange={e => setFormData({...formData, description: e.target.value})}
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2 block">Preço de Custo (R$)</label>
+                    <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-400 mb-2 block">Preço de Custo (R$)</label>
                     <input 
                       required
                       type="number"
                       step="0.01"
-                      className="tech-input"
+                      className="tech-input bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
                       value={formData.costPrice}
                       onChange={e => setFormData({...formData, costPrice: parseFloat(e.target.value)})}
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2 block">Preço de Venda (R$)</label>
+                    <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-400 mb-2 block">Preço de Venda (R$)</label>
                     <input 
                       required
                       type="number"
                       step="0.01"
-                      className="tech-input"
+                      className="tech-input bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
                       value={formData.salePrice}
                       onChange={e => setFormData({...formData, salePrice: parseFloat(e.target.value)})}
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2 block">Quantidade Inicial</label>
+                  <label className="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-400 mb-2 block">Quantidade Inicial</label>
                   <input 
                     required
                     type="number"
-                    className="tech-input"
+                    className="tech-input bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
                     value={formData.quantity}
                     onChange={e => setFormData({...formData, quantity: parseInt(e.target.value)})}
                   />
                 </div>
 
                 <div className="pt-4 flex gap-3">
-                  <button type="button" onClick={() => setShowForm(false)} className="flex-1 px-6 py-4 font-bold text-slate-400 font-mono text-xs">// CANCELAR</button>
+                  <button type="button" onClick={() => setShowForm(false)} className="flex-1 px-6 py-4 font-bold text-slate-400 dark:text-slate-400 font-mono text-xs hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">// CANCELAR</button>
                   <button 
                     disabled={loading}
                     type="submit" 
-                    className="flex-2 bg-blue-600 text-white px-8 py-4 rounded-xl font-bold tech-gradient flex items-center justify-center gap-2 hover:scale-[1.02] transition-all disabled:opacity-50"
+                    className="flex-2 bg-blue-600 text-white px-8 py-4 rounded-xl font-bold tech-gradient flex items-center justify-center gap-2 hover:scale-[1.02] transition-all disabled:opacity-50 cursor-pointer"
                   >
                     <Save size={18} />
                     {loading ? 'SALVANDO...' : 'CADASTRAR ITEM'}
@@ -352,13 +352,13 @@ function StatCard({ icon, label, value, color }: { icon: React.ReactNode, label:
     <motion.div 
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-sm relative overflow-hidden group"
+      className="bg-white dark:bg-slate-900 p-8 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group"
     >
       <div className={`absolute top-0 right-0 w-32 h-32 blur-3xl opacity-5 rounded-full -mr-16 -mt-16 transition-opacity group-hover:opacity-10 ${color.replace('text', 'bg')}`} />
-      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-2">{label}</p>
+      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-400 mb-2">{label}</p>
       <div className="flex items-center justify-between relative z-10">
         <p className={`text-2xl font-black tracking-tighter ${color}`}>{value}</p>
-        <div className={`p-2 rounded-xl bg-slate-50 transition-colors group-hover:bg-white ${color}`}>{icon}</div>
+        <div className={`p-2 rounded-xl bg-slate-50 dark:bg-slate-800 transition-colors group-hover:bg-white dark:group-hover:bg-slate-700 ${color}`}>{icon}</div>
       </div>
     </motion.div>
   );

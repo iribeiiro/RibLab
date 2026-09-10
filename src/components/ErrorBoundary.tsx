@@ -34,25 +34,25 @@ export default class ErrorBoundary extends Component<Props, State> {
   public override render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-[400px] flex flex-col items-center justify-center p-8 bg-white rounded-3xl border border-slate-200 shadow-sm text-center my-6">
-          <div className="w-16 h-16 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mb-6">
+        <div className="min-h-[400px] flex flex-col items-center justify-center p-8 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm text-center my-6 transition-colors">
+          <div className="w-16 h-16 bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 rounded-2xl flex items-center justify-center mb-6">
             <AlertTriangle size={32} />
           </div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Ops! Ocorreu uma oscilação na visualização</h2>
-          <p className="text-slate-500 max-w-md text-sm mb-6 leading-relaxed">
-            Não se preocupe, seus dados estão seguros. A interface foi restaurada para que você possa continuar trabalhando.
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 tracking-tight">Ops! Ocorreu uma oscilação na visualização</h2>
+          <p className="text-slate-500 dark:text-slate-400 max-w-md text-sm mb-6 leading-relaxed">
+            Não se preocupe, seus dados estão seguros. A interface foi protegida para que você possa continuar trabalhando sem interrupções.
           </p>
           <div className="flex gap-3">
             <button
               onClick={this.handleReset}
-              className="tech-gradient text-white px-6 py-3 rounded-xl font-bold text-sm flex items-center gap-2 shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all"
+              className="tech-gradient text-white px-6 py-3 rounded-xl font-bold text-sm flex items-center gap-2 shadow-lg shadow-blue-100 dark:shadow-none hover:scale-105 active:scale-95 transition-all cursor-pointer"
             >
               <RefreshCw size={16} />
               Restaurar Painel
             </button>
             <button
               onClick={() => window.location.reload()}
-              className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-3 rounded-xl font-bold text-sm flex items-center gap-2 transition-colors"
+              className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-6 py-3 rounded-xl font-bold text-sm flex items-center gap-2 transition-colors cursor-pointer"
             >
               <Home size={16} />
               Recarregar Página

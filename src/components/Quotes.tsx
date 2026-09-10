@@ -179,17 +179,17 @@ export default function Quotes({ onNavigateToOrders }: QuotesProps) {
       {/* Top Header */}
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
             Orçamentos de Serviços & Produtos
           </h2>
-          <p className="text-slate-500 font-medium text-sm sm:text-base">
+          <p className="text-slate-500 dark:text-slate-400 font-medium text-sm sm:text-base">
             Elabore propostas, discrimine peças e converta em Ordem de Serviço com 1 clique
           </p>
         </div>
 
         <button 
           onClick={() => setShowNewModal(true)}
-          className="flex items-center justify-center gap-2 tech-gradient text-white px-6 py-3.5 rounded-2xl font-bold transition-all active:scale-95 group shadow-lg shadow-blue-100 cursor-pointer"
+          className="flex items-center justify-center gap-2 tech-gradient text-white px-6 py-3.5 rounded-2xl font-bold transition-all active:scale-95 group shadow-lg shadow-blue-100 dark:shadow-none cursor-pointer"
         >
           <Plus size={22} className="transition-transform group-hover:rotate-90" />
           <span>Novo Orçamento</span>
@@ -242,41 +242,41 @@ export default function Quotes({ onNavigateToOrders }: QuotesProps) {
 
       {/* Metrics Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-1">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Total Propostas</span>
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-1">
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Total Propostas</span>
           <div className="flex items-center justify-between">
-            <span className="text-2xl font-black text-slate-900">{totalCount}</span>
-            <div className="w-8 h-8 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs">
+            <span className="text-2xl font-black text-slate-900 dark:text-white">{totalCount}</span>
+            <div className="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center font-bold text-xs">
               <FileText size={16} />
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-1">
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-1">
           <span className="text-xs font-bold uppercase tracking-wider text-amber-500">Em Análise / Pendentes</span>
           <div className="flex items-center justify-between">
-            <span className="text-2xl font-black text-amber-600">{pendingCount}</span>
-            <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-xs">
+            <span className="text-2xl font-black text-amber-600 dark:text-amber-400">{pendingCount}</span>
+            <div className="w-8 h-8 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-xs">
               <Clock size={16} />
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-1">
-          <span className="text-xs font-bold uppercase tracking-wider text-emerald-600">Aprovados / Convertidos</span>
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-1">
+          <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Aprovados / Convertidos</span>
           <div className="flex items-center justify-between">
-            <span className="text-2xl font-black text-emerald-600">{approvedCount}</span>
-            <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xs">
+            <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400">{approvedCount}</span>
+            <div className="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-xs">
               <CheckCircle2 size={16} />
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-1">
-          <span className="text-xs font-bold uppercase tracking-wider text-blue-600">Total em Propostas (R$)</span>
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-1">
+          <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">Total em Propostas (R$)</span>
           <div className="flex items-center justify-between">
-            <span className="text-xl sm:text-2xl font-black text-slate-900">R$ {totalAmountSum.toFixed(2)}</span>
-            <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs">
+            <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">R$ {totalAmountSum.toFixed(2)}</span>
+            <div className="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-xs">
               <DollarSign size={16} />
             </div>
           </div>
@@ -284,16 +284,16 @@ export default function Quotes({ onNavigateToOrders }: QuotesProps) {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs">
         {/* Search */}
         <div className="relative flex-1">
-          <Search size={18} className="absolute left-3.5 top-3 text-slate-400" />
+          <Search size={18} className="absolute left-3.5 top-3 text-slate-400 dark:text-slate-500" />
           <input
             type="text"
             placeholder="Buscar por cliente, nº do orçamento, marca, defeito, peça..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-500"
+            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -312,7 +312,7 @@ export default function Quotes({ onNavigateToOrders }: QuotesProps) {
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
                 statusFilter === f.key
                   ? 'bg-blue-600 text-white shadow-xs'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               {f.label}
@@ -328,13 +328,13 @@ export default function Quotes({ onNavigateToOrders }: QuotesProps) {
           <span>Carregando orçamentos...</span>
         </div>
       ) : filteredQuotes.length === 0 ? (
-        <div className="bg-white rounded-3xl p-12 text-center border border-slate-200/80 shadow-xs space-y-4 max-w-lg mx-auto">
-          <div className="w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto shadow-inner">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-12 text-center border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4 max-w-lg mx-auto">
+          <div className="w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto shadow-inner">
             <FileText size={32} />
           </div>
           <div className="space-y-1">
-            <h3 className="text-lg font-extrabold text-slate-900">Nenhum orçamento encontrado</h3>
-            <p className="text-xs text-slate-500">
+            <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">Nenhum orçamento encontrado</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               {searchTerm 
                 ? 'Nenhum resultado corresponde à sua busca.' 
                 : 'Crie propostas comerciais de serviços e produtos para seus clientes com cálculo automático.'}
@@ -363,13 +363,13 @@ export default function Quotes({ onNavigateToOrders }: QuotesProps) {
                 key={q.id}
                 layout
                 onClick={() => setSelectedQuote(q)}
-                className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-blue-300 transition-all cursor-pointer flex flex-col justify-between space-y-4 group"
+                className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-xs hover:shadow-md hover:border-blue-300 dark:hover:border-blue-600 transition-all cursor-pointer flex flex-col justify-between space-y-4 group"
               >
                 {/* Top Row: Quote Number, Status, Actions */}
                 <div>
                   <div className="flex justify-between items-start gap-2">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-mono text-xs font-extrabold text-blue-600 bg-blue-50 border border-blue-100 px-2.5 py-0.5 rounded-lg">
+                      <span className="font-mono text-xs font-extrabold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-900/50 px-2.5 py-0.5 rounded-lg">
                         #{q.quoteNumber}
                       </span>
                       {getStatusBadge(q.status)}
@@ -383,7 +383,7 @@ export default function Quotes({ onNavigateToOrders }: QuotesProps) {
                           e.stopPropagation();
                           setPrintingQuote(q);
                         }}
-                        className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="p-1.5 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
                         title="Imprimir / Salvar PDF"
                       >
                         <Printer size={15} />
@@ -395,7 +395,7 @@ export default function Quotes({ onNavigateToOrders }: QuotesProps) {
                           e.stopPropagation();
                           setEditingQuote(q);
                         }}
-                        className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="p-1.5 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
                         title="Editar"
                       >
                         <Edit2 size={15} />
@@ -404,7 +404,7 @@ export default function Quotes({ onNavigateToOrders }: QuotesProps) {
                       <button
                         type="button"
                         onClick={(e) => handleDelete(e, q.id!, q.quoteNumber)}
-                        className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        className="p-1.5 text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors"
                         title="Excluir"
                       >
                         <Trash2 size={15} />
@@ -415,7 +415,7 @@ export default function Quotes({ onNavigateToOrders }: QuotesProps) {
                   {/* Customer & Machine Info */}
                   <div className="mt-3 space-y-1">
                     <div className="flex justify-between items-center">
-                      <h4 className="font-extrabold text-slate-900 text-base leading-tight">
+                      <h4 className="font-extrabold text-slate-900 dark:text-white text-base leading-tight">
                         {q.customerName}
                       </h4>
                       {cleanPhone && (
@@ -424,22 +424,22 @@ export default function Quotes({ onNavigateToOrders }: QuotesProps) {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="text-[11px] font-bold text-emerald-600 hover:text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-lg flex items-center gap-1"
+                          className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-lg flex items-center gap-1"
                         >
                           <MessageSquare size={12} /> WhatsApp
                         </a>
                       )}
                     </div>
-                    <p className="text-xs font-semibold text-slate-600 flex items-center gap-1.5">
+                    <p className="text-xs font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
                       <Wrench size={13} className="text-slate-400" />
                       <span>{q.deviceType}: {q.deviceBrand} {q.deviceModel}</span>
                     </p>
                   </div>
 
                   {/* Defect preview */}
-                  <div className="mt-3 bg-slate-50 p-2.5 rounded-xl border border-slate-100 space-y-1 text-xs">
-                    <p className="text-[10px] uppercase font-bold text-slate-400">Defeito Informado:</p>
-                    <p className="text-slate-700 line-clamp-2 leading-relaxed">
+                  <div className="mt-3 bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800 space-y-1 text-xs">
+                    <p className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500">Defeito Informado:</p>
+                    <p className="text-slate-700 dark:text-slate-300 line-clamp-2 leading-relaxed">
                       "{q.reportedProblem || 'Não detalhado.'}"
                     </p>
                   </div>
@@ -447,17 +447,17 @@ export default function Quotes({ onNavigateToOrders }: QuotesProps) {
                   {/* Items Chips Preview */}
                   <div className="mt-3 flex flex-wrap items-center gap-1.5">
                     {servicesCount > 0 && (
-                      <span className="text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded-md">
+                      <span className="text-[10px] font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-900/50 px-2 py-0.5 rounded-md">
                         🛠️ {servicesCount} {servicesCount === 1 ? 'serviço' : 'serviços'}
                       </span>
                     )}
                     {partsCount > 0 && (
-                      <span className="text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-0.5 rounded-md">
+                      <span className="text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-900/50 px-2 py-0.5 rounded-md">
                         📦 {partsCount} {partsCount === 1 ? 'peça/produto' : 'peças/produtos'}
                       </span>
                     )}
                     {q.devicePhotos && q.devicePhotos.length > 0 && (
-                      <span className="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md">
+                      <span className="text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-0.5 rounded-md">
                         📷 {q.devicePhotos.length} fotos
                       </span>
                     )}
@@ -465,17 +465,17 @@ export default function Quotes({ onNavigateToOrders }: QuotesProps) {
                 </div>
 
                 {/* Bottom Row: Total Price and Convert Button */}
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">Total Orçado</span>
-                    <span className="text-lg font-black text-slate-900">
+                    <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 block">Total Orçado</span>
+                    <span className="text-lg font-black text-slate-900 dark:text-white">
                       R$ {Number(q.totalAmount || 0).toFixed(2)}
                     </span>
                   </div>
 
                   {/* Convert to OS Action Button */}
                   {q.status === QuoteStatus.Converted ? (
-                    <span className="text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-xl flex items-center gap-1.5">
+                    <span className="text-xs font-bold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900/60 px-3 py-1.5 rounded-xl flex items-center gap-1.5">
                       <Check size={14} /> OS #{q.convertedOrderNumber || 'Ativa'}
                     </span>
                   ) : (
@@ -501,26 +501,26 @@ export default function Quotes({ onNavigateToOrders }: QuotesProps) {
 
       {/* Convert to OS Confirmation Modal */}
       {convertingQuote && (
-        <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-[80] flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-slate-950/70 dark:bg-black/80 backdrop-blur-sm z-[80] flex items-center justify-center p-4">
           <motion.div 
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200 text-left space-y-4"
+            className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-800 text-left space-y-4"
           >
-            <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center shadow-xs">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shadow-xs">
               <Sparkles size={24} />
             </div>
 
             <div className="space-y-1">
-              <h3 className="font-extrabold text-slate-900 text-lg">
+              <h3 className="font-extrabold text-slate-900 dark:text-white text-lg">
                 Gerar Ordem de Serviço?
               </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Você está gerando uma nova <strong>Ordem de Serviço (OS)</strong> para o cliente <strong>{convertingQuote.customerName}</strong> com o valor total de <strong>R$ {Number(convertingQuote.totalAmount).toFixed(2)}</strong>.
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                Você está gerando uma nova <strong className="text-slate-900 dark:text-white">Ordem de Serviço (OS)</strong> para o cliente <strong className="text-slate-900 dark:text-white">{convertingQuote.customerName}</strong> com o valor total de <strong className="text-slate-900 dark:text-white">R$ {Number(convertingQuote.totalAmount).toFixed(2)}</strong>.
               </p>
             </div>
 
-            <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs space-y-1">
+            <div className="bg-slate-50 dark:bg-slate-800/60 p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs space-y-1 text-slate-700 dark:text-slate-300">
               <p><strong>Aparelho:</strong> {convertingQuote.deviceBrand} {convertingQuote.deviceModel}</p>
               <p><strong>Total:</strong> R$ {Number(convertingQuote.totalAmount).toFixed(2)}</p>
               <p><strong>Itens:</strong> {convertingQuote.items?.length || 0} discriminados</p>
@@ -531,7 +531,7 @@ export default function Quotes({ onNavigateToOrders }: QuotesProps) {
                 type="button"
                 onClick={() => setConvertingQuote(null)}
                 disabled={convertingLoading}
-                className="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl"
+                className="px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
               >
                 Cancelar
               </button>
@@ -539,7 +539,7 @@ export default function Quotes({ onNavigateToOrders }: QuotesProps) {
                 type="button"
                 onClick={() => handleQuickConvert(convertingQuote)}
                 disabled={convertingLoading}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-xs font-extrabold flex items-center gap-2 shadow-lg shadow-emerald-200 active:scale-95 disabled:opacity-50 cursor-pointer"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-xs font-extrabold flex items-center gap-2 shadow-lg shadow-emerald-200 dark:shadow-none active:scale-95 disabled:opacity-50 cursor-pointer"
               >
                 {convertingLoading ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
                 <span>{convertingLoading ? 'Gerando OS...' : 'Confirmar e Criar OS'}</span>
